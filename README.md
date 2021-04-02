@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# 스터디 TODO Front-end[미완성] (21-04-02기준)
+[백엔드 (Spring-boot)](https://github.com/jeonghyeonkwon/todo-app-back)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 실행
+yarn start
 
-## Available Scripts
+## 주요 기술
+react, redux-saga, material-ui
 
-In the project directory, you can run:
+## URI 정리
+path|query string|내용|완성 여부|추가할 내용(설명)|
+---|---|---|---|---|
+/|X|홈|미완성|스터디, 질문 게시판 리스트,많이 검색한 기술의 순위를 리스트로 출력할 예정|
+/login|X|로그인|완성|X|
+/register|X|회원가입|완성|X|
+/todo|X|TODO|진행중|TODO 카드의 자세한 내용 and 많은 양의 카드를 페이징 처리|
+/study|X|스터디 카테고리|완성|X|
+/study/:type|현재 X|유형별 스터디 카테고리|보완 필요|현재 서버에 page를 query string 으로 호출은 함. front에서도 page를 query string으로 나타내도록 보완 예정, 지역별 리스트를 볼수 있도록 할 예정|
+/study/:type/write|X|게시글 작성|기술 분야와 내용들을 입력하여 글을 씁니다.|
+/study/board/:number|X|게시글 자세히 보기|완성|현재 사용자가 글쓴이이면 인원이 모집 완료로 마감을 할 수 있음, 댓글 작성 및 출력|
+/qna, /stduy/:type, /study/board/:number|X|질문 게시판 내용들|미완성|스터디 게시판과 비슷하나 모집인원 등의 내용을 제외하므로 컴포넌트 재사용 하도록 리팩토링 예정|
+회원 정보 수정, 회원 탈퇴, 아이디 비밀번호 찾기|예정|예정|미완성|예정|
 
-### `yarn start`
+## 현재 상황(이미지)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 홈(/)
+![홈화면](https://user-images.githubusercontent.com/38342219/113385033-407ffc00-93c2-11eb-933c-42939d76026b.PNG)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 로그인(/login)
+![로그인](https://user-images.githubusercontent.com/38342219/113385091-60afbb00-93c2-11eb-9f80-30ec42b12d22.PNG)
 
-### `yarn test`
+### 회원가입(/register)
+![회원가입](https://user-images.githubusercontent.com/38342219/113385250-b71cf980-93c2-11eb-9ab0-b1fb37555b84.PNG)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### todo(/todo)
+![todo 홈화면](https://user-images.githubusercontent.com/38342219/113385611-68239400-93c3-11eb-899c-8552f72f967f.PNG)
+![todo 추가](https://user-images.githubusercontent.com/38342219/113385618-6b1e8480-93c3-11eb-9a0b-b3bba785930b.PNG)
+목표 날짜와 현재 날짜를 서버에서 비교하여 진행중, 오늘 마감, 실패를 리스트로 받습니다.
+![todo 실패](https://user-images.githubusercontent.com/38342219/113385723-a456f480-93c3-11eb-9a59-b62e5dbcd238.PNG)
 
-### `yarn build`
+### study 홈(/study)
+![스터디or질문게시판 홈](https://user-images.githubusercontent.com/38342219/113385747-b173e380-93c3-11eb-9b6c-fa54e3125784.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### study 리스트(/study/:type)
+![스터디 리스트](https://user-images.githubusercontent.com/38342219/113385788-c486b380-93c3-11eb-882b-74af4707adee.PNG)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### study 글쓰기(/study/:type/write)
+![게시글 작성](https://user-images.githubusercontent.com/38342219/113386036-4d9dea80-93c4-11eb-8c03-24dd609b5b44.PNG)
+기술 분야를 1~2개 까지 지정할 수 있습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 게시글 자세히(/study/:id)
+![내 게시글](https://user-images.githubusercontent.com/38342219/113385830-d9fbdd80-93c3-11eb-8414-e383545891fc.PNG)
+![다른사람 게시글](https://user-images.githubusercontent.com/38342219/113385836-dbc5a100-93c3-11eb-8bbc-c4b1a3b8e62e.PNG)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
