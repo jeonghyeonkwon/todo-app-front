@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import image from '../../images/book-307045_1280.png';
 import { logout } from '../../modules/user';
+import { menuData } from '../../data/menuData';
+import { withRouter } from 'react-router-dom';
 const HeaderComponent = styled.header`
   display: flex;
   padding: 20px;
   width: 100%;
   height: 250px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
 `;
 const Logo = styled.div`
   flex: 2;
@@ -180,7 +182,7 @@ const DropDown = styled.li`
   }
 `;
 
-const Header = () => {
+const Header = ({ history }) => {
   const { accountId, accountName } = useSelector(({ user }) => ({
     accountId: user.account.accountId,
     accountName: user.account.accountName,
@@ -192,7 +194,7 @@ const Header = () => {
   const onClickLogout = (e) => {
     dispatch(logout());
 
-    window.location.reload();
+    history.push('/');
   };
   return (
     <HeaderComponent>
@@ -209,7 +211,7 @@ const Header = () => {
           {accountName ? (
             <LoginUser>
               <b>{accountName}</b>님 반갑습니다
-              <Link to="/">회원 정보 수정</Link>
+              <Link to="/myinfo">회원 정보 수정</Link>
               <button onClick={onClickLogout}>로그아웃</button>
             </LoginUser>
           ) : (
@@ -227,35 +229,25 @@ const Header = () => {
             <DropDown>
               <Link to="/study">스터디 모집</Link>
               <DropDownMenu>
-                <li>
-                  <Link to="/study/language">프로그래밍 언어</Link>
-                </li>
-                <li>
-                  <Link to="/study/mobile">모바일</Link>
-                </li>
-                <li>
-                  <Link to="/study/web">웹</Link>
-                </li>
-                <li>
-                  <Link to="/study/db">DB</Link>
-                </li>
+                {menuData.map((data) => (
+                  <li>
+                    <Link to={`/study/${data.type}?page=0&local=ALL`}>
+                      {data.name}
+                    </Link>
+                  </li>
+                ))}
               </DropDownMenu>
             </DropDown>
             <DropDown>
               <Link to="/qna">질문 게시판</Link>
               <DropDownMenu>
-                <li>
-                  <Link to="/qna/language">프로그래밍 언어</Link>
-                </li>
-                <li>
-                  <Link to="/qna/mobile">모바일</Link>
-                </li>
-                <li>
-                  <Link to="/qna/web">웹</Link>
-                </li>
-                <li>
-                  <Link to="/qna/db">DB</Link>
-                </li>
+                {menuData.map((data) => (
+                  <li>
+                    <Link key={data.type} to={`/qna/${data.type}?page=0`}>
+                      {data.name}
+                    </Link>
+                  </li>
+                ))}
               </DropDownMenu>
             </DropDown>
           </Gnb>
@@ -265,4 +257,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);

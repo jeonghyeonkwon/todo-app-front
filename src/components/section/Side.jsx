@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { menuData } from '../../data/menuData';
 const DropDownMenu = styled.ul`
   margin: 0;
 
@@ -86,18 +87,13 @@ const Side = () => {
             <Link to="/study">스터디 모집</Link>
           </button>
           <DropDownMenu>
-            <li>
-              <Link to="/study/language">프로그래밍 언어</Link>
-            </li>
-            <li>
-              <Link to="/study/mobile">모바일</Link>
-            </li>
-            <li>
-              <Link to="/study/web">웹</Link>
-            </li>
-            <li>
-              <Link to="/study/db">DB</Link>
-            </li>
+            {menuData.map((data) => (
+              <li>
+                <Link to={`/study/${data.type}?page=0&local=ALL`}>
+                  {data.name}
+                </Link>
+              </li>
+            ))}
           </DropDownMenu>
         </DropDown>
         <DropDown>
@@ -105,18 +101,11 @@ const Side = () => {
             <Link to="/qna">질문 게시판</Link>
           </button>
           <DropDownMenu>
-            <li>
-              <Link to="/qna/language">프로그래밍 언어</Link>
-            </li>
-            <li>
-              <Link to="/qna/mobile">모바일</Link>
-            </li>
-            <li>
-              <Link to="/qna/web">웹</Link>
-            </li>
-            <li>
-              <Link to="/qna/db">DB</Link>
-            </li>
+            {menuData.map((data) => (
+              <li>
+                <Link to={`/qna/${data.type}?page=0`}>{data.name}</Link>
+              </li>
+            ))}
           </DropDownMenu>
         </DropDown>
       </SideMenu>

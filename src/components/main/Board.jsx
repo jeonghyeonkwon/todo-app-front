@@ -2,42 +2,26 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Pagination } from '@material-ui/lab';
+import {
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@material-ui/core';
+
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import Tags from '../common/Tags';
 import { Link, withRouter } from 'react-router-dom';
-import { menuData } from './Kinds';
+import { menuData } from '../../data/menuData';
 import axios from 'axios';
+import { Pagination } from '@material-ui/lab';
 import Loading from '../common/Loading';
-const columns = [
-  { id: 'no', label: 'No.', width: '10%' },
-  { id: 'title', label: '제목', width: '40%' },
-  {
-    id: 'writer',
-    label: '작성자',
-    width: '15%',
-    align: 'right',
-  },
-  {
-    id: 'types',
-    label: '세부 분야',
-    width: '20%',
-    align: 'center',
-  },
-  {
-    id: 'status',
-    label: '모집인원',
-    width: '15%',
-    align: 'center',
-  },
-];
+import qs from 'qs';
+
+import LocalList from './LocalList';
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: '#a0d0bf',
@@ -64,61 +48,6 @@ const useStyles = makeStyles({
   },
 });
 
-// function createData(no, title, writer, types) {
-//   const status = 11;
-//   return { no, title, writer, types, status };
-// }
-
-// const rows = [
-//   createData(
-//     112345,
-//     '리액트 스터디 모집해요 리액트 스터디 모집해요 리액트 스터디 모집해요 리액트 스터디 모집해요 리액트 스터디 모집해요',
-//     'givejeong1234',
-//     ['react', 'rubyon'],
-//   ),
-//   createData(1345, '리액트 스터디 모집해요', 'givejeong1234', ['spring']),
-//   createData(11245124123123, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'rubyon',
-//     'javascript',
-//   ]),
-//   createData(1345, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'kotilin',
-//   ]),
-//   createData(122345, '리액트 스터디 모집해요', 'givejeong1234', ['c', 'cp']),
-//   createData(11445, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(11255, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(11237, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(11285, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(11045, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(16345, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(32345, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-//   createData(11345, '리액트 스터디 모집해요', 'givejeong1234', [
-//     'react',
-//     'python',
-//   ]),
-// ];
 const TitleAndCreate = styled.div`
   display: flex;
   justify-content: space-between;
@@ -152,12 +81,17 @@ const boardTitle = {
     kor: '스터디 모집',
   },
 };
-const Board = ({ location }) => {
+const Board = ({ location, columns, history }) => {
   const classes = useStyles();
+  const query = qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
   const [loading, setLoading] = useState(false);
   const type = location.pathname.split('/')[1];
   const section = location.pathname.split('/')[2];
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(query.page ? query.page : 0);
+  const [local, setLocal] = useState(query.local ? query.local : 'ALL');
+
   const [form, setForm] = useState({
     totalPage: 0,
     totalElements: 0,
@@ -167,13 +101,18 @@ const Board = ({ location }) => {
   });
   const kor = boardTitle[type];
   const sort = menuData.find((data) => data.type === section);
+  const onClickLocal = (local) => {
+    console.log(local);
+    setLocal(local);
+  };
   useEffect(() => {
+    history.push(`/${type}/${section}?page=${page}&local=${local}`);
     console.log(`type ${type} section ${section}`);
     const fetchData = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/${type}?section=${section}&page=${page}`,
+          `http://localhost:8080/api/${type}?section=${section}&page=${page}&size=10&local=${local}`,
         );
         setForm(response.data);
         console.log(response);
@@ -183,32 +122,21 @@ const Board = ({ location }) => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [page, type, section, local]);
+
   const pageChange = (event, value) => {
     setPage(value - 1);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/${type}?section=${section}&page=${page}`,
-        );
-        setForm(response.data);
-        console.log(response);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [page, type, section]);
+
   return (
     <BoardComponent>
-      {loading && !form.list ? (
+      {loading && !form ? (
         <Loading></Loading>
       ) : (
         <>
+          {type === 'study' && (
+            <LocalList local={local} onClickLocal={onClickLocal}></LocalList>
+          )}
           <TitleAndCreate>
             <h1>
               {kor.kor} ({sort.name})
@@ -243,7 +171,7 @@ const Board = ({ location }) => {
                 </TableBody>
               ) : (
                 <TableBody>
-                  {form.list.map((row) => (
+                  {form.content.map((row) => (
                     <TableRow key={row.id}>
                       <StyledTableCell>
                         {row.id.toString().length > 10
@@ -272,12 +200,20 @@ const Board = ({ location }) => {
                           ></Tags>
                         ))}
                       </StyledTableCell>
+                      {type === 'study' && (
+                        <StyledTableCell align="right">
+                          {row.status === 'ing' ? (
+                            `${row.applicant}명`
+                          ) : (
+                            <Tags data="finish"></Tags>
+                          )}
+                        </StyledTableCell>
+                      )}
+                      <StyledTableCell align="center">
+                        {row.hit}
+                      </StyledTableCell>
                       <StyledTableCell align="right">
-                        {row.status === 'ing' ? (
-                          `${row.applicant}명`
-                        ) : (
-                          <Tags data="finish"></Tags>
-                        )}
+                        {row.createStudy}
                       </StyledTableCell>
                     </TableRow>
                   ))}
@@ -292,7 +228,7 @@ const Board = ({ location }) => {
               display: 'inline-block',
             }}
             size="large"
-            count={form.totalPage}
+            count={form.totalPages}
             onChange={pageChange}
             variant="outlined"
             color="primary"

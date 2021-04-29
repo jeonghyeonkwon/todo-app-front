@@ -45,7 +45,7 @@ const font = {
     text: '실패',
     color: 'error',
   },
-  success: {
+  achieve: {
     text: '성공',
     color: 'primary',
   },

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 const Square = styled.div`
-  width: 350px;
-  height: 350px;
+  width: 450px;
+  height: 450px;
   position: relative;
   margin: 40px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   span {
     position: absolute;
     width: 100%;
@@ -81,7 +81,9 @@ const Square = styled.div`
 `;
 const KindComponent = styled.div`
   display: inline-block;
-  border: 1px solid dodgerblue;
+  /* border: 1px solid dodgerblue; */
+  width: 50%;
+  height: 50%;
 `;
 const Kind = ({ data, section }) => {
   const { name, contents, color, type } = data;
@@ -95,7 +97,7 @@ const Kind = ({ data, section }) => {
         <div>
           <h1>{name}</h1>
           <p>{contents}</p>
-          <Link to={`/${section}/${type}`}>들어가기</Link>
+          <Link to={`/${section}/${type}?page=0&local=ALL`}>들어가기</Link>
         </div>
       </Square>
     </KindComponent>

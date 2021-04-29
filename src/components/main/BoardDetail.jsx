@@ -33,26 +33,7 @@ const Tabel = styled.table`
     /* border: 1px solid red; */
   }
 `;
-const Reply = styled.div`
-  border: 1px solid gray;
-  padding: 15px 15px 5px 15px;
-  margin-bottom: 5px;
-  border-radius: 15px;
-  background-color: #eee;
-  label {
-    font-weight: bold;
-    font-size: 18px;
-    /* border: 1px solid red; */
-    margin-right: 20px;
-  }
-  i {
-    /* border: 1px solid red; */
-  }
-  p {
-    /* border: 1px solid red; */
-  }
-`;
-const ReplyList = styled.div``;
+
 const ReplyInput = styled.div`
   width: 100%;
   display: flex;
@@ -73,16 +54,14 @@ const Form = styled.div`
 `;
 const BoardDetailComponent = styled.div`
   padding: 20px;
-  flex: 4;
+
   /* border: 1px solid red; */
   /* height: 800px; */
   display: flex;
-
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   background: #fff;
 `;
-const BoardDetail = ({ location, history }) => {
+const BoardDetail = ({ location, history, section }) => {
   const [detail, setDetail] = useState({
     id: '',
     detail: '',
@@ -91,11 +70,15 @@ const BoardDetail = ({ location, history }) => {
     applicant: '',
     status: '',
     commentList: [],
+    hit: 0,
+    createStudy: '',
   });
+
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector(({ user }) => ({
     currentUser: user.account.accountId,
   }));
+
   const [comment, setComment] = useState('');
   const onChange = (e) => {
     setComment(e.target.value);
@@ -111,7 +94,7 @@ const BoardDetail = ({ location, history }) => {
     e.preventDefault();
     const response = (token) =>
       axios.post(
-        `http://localhost:8080/api/study/${detail.id}`,
+        `http://localhost:8080/api/${section}/${detail.id}`,
         JSON.stringify({ comment: comment }),
         {
           headers: {
@@ -142,12 +125,16 @@ const BoardDetail = ({ location, history }) => {
   const onClickClosing = async (e) => {
     e.preventDefault();
     const response = (token) =>
-      axios.patch(`http://localhost:8080/api/study/${detail.id}`, detail.id, {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-          Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
+      axios.patch(
+        `http://localhost:8080/api/${section}/${detail.id}`,
+        detail.id,
+        {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
+          },
         },
-      });
+      );
     try {
       const token = localStorage.getItem('jwttoken');
       console.log(token);
@@ -173,7 +160,7 @@ const BoardDetail = ({ location, history }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/study/${boardId}`,
+          `http://localhost:8080/api/${section}/${boardId}`,
           {
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
@@ -204,6 +191,7 @@ const BoardDetail = ({ location, history }) => {
   }, []);
   useEffect(() => {
     console.log(detail);
+    console.log(`type ${section}`);
   }, [detail]);
   return (
     <BoardDetailComponent>
@@ -214,51 +202,64 @@ const BoardDetail = ({ location, history }) => {
           <h1>게시글</h1>
           <Tabel>
             <thead>
+              {section === 'study' ? (
+                <tr>
+                  <th colSpan={1}>NO.</th>
+                  <td colSpan={3}>{detail.id}</td>
+                  <th colSpan={1}>모집인원</th>
+                  {detail.status === 'finish' ? (
+                    <td colSpan={3}>
+                      <Tags data="finish"></Tags>
+                    </td>
+                  ) : (
+                    <td colSpan={3}>{detail.applicant}명</td>
+                  )}
+                  <th colSpan={1}>조회수</th>
+                  <td colSpan={3}>{detail.hit}</td>
+                </tr>
+              ) : (
+                <tr>
+                  <th colSpan={1}>NO.</th>
+                  <td colSpan={7}>{detail.id}</td>
+                  <th colSpan={1}>조회수</th>
+                  <td colSpan={3}>{detail.hit}</td>
+                </tr>
+              )}
               <tr>
-                <th>NO.</th>
-                <td colSpan={3}>{detail.id}</td>
-                <th>모집인원</th>
-
-                {detail.status === 'finish' ? (
-                  <td colSpan={1}>
-                    <Tags data="finish"></Tags>
-                  </td>
-                ) : (
-                  <td colSpan={1}>{detail.applicant}명</td>
-                )}
-              </tr>
-              <tr>
-                <th>제목</th>
-                <td colSpan={5}>{detail.title}</td>
-              </tr>
-              <tr>
-                <th>작성자</th>
-                <td colSpan={2}>{detail.writer}</td>
-                <th>분야</th>
-                <td colSpan={2}>
+                <th colSpan={1}>작성자</th>
+                <td colSpan={3}>{detail.writer}</td>
+                <th colSpan={1}>분야</th>
+                <td colSpan={3}>
                   {detail.programmingType.map((data) => (
                     <Tags key={data.title} data={data.title}></Tags>
                   ))}
                 </td>
+                <th colSpan={1}>작성 일시</th>
+                <td colSpan={3}>{detail.createBoard}</td>
+              </tr>
+              <tr>
+                <th colSpan={1}>제목</th>
+                <td colSpan={11}>{detail.title}</td>
               </tr>
             </thead>
-
             <tbody>
               <tr>
                 <td colspan={6}>{detail.contents}</td>
               </tr>
             </tbody>
           </Tabel>
-          {currentUser === detail.writer && detail.status === 'ing' && (
-            <Button
-              variant="outlined"
-              color="secondary"
-              fullWidth
-              onClick={onClickClosing}
-            >
-              마감 하기
-            </Button>
-          )}
+          {currentUser === detail.writer &&
+            detail.status === 'ing' &&
+            section === 'study' && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                onClick={onClickClosing}
+              >
+                마감 하기
+              </Button>
+            )}
 
           <ReplyForm>
             <ReplyInput>
@@ -285,15 +286,6 @@ const BoardDetail = ({ location, history }) => {
                 댓글 입력
               </Button>
             </ReplyInput>
-            <ReplyList>
-              {detail.commentList.map((data, index) => (
-                <Reply>
-                  <label>{data.writer}</label>
-                  <i>{data.createComment}</i>
-                  <p>{data.comment}</p>
-                </Reply>
-              ))}
-            </ReplyList>
           </ReplyForm>
         </Form>
       )}

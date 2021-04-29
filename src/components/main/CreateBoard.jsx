@@ -4,6 +4,7 @@ import { TextField, Chip, makeStyles, Button } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { types } from '../../data/skillTypes';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -34,7 +35,7 @@ const CreateBoardComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
-const CreateBoard = ({ location, history }) => {
+const CreateBoard = ({ location, history, type }) => {
   const classes = useStyles();
   const fixedOptions = location.pathname.split('/')[2];
   const [tag, setTag] = React.useState([]);
@@ -44,6 +45,9 @@ const CreateBoard = ({ location, history }) => {
     applicant: 0,
     programmingType: null,
   });
+  useEffect(() => {
+    console.log(`fix : ${fixedOptions}`);
+  }, []);
   const onChange = (e) => {
     const { value, name } = e.target;
     console.log(`value : ${value} name : ${name}`);
@@ -81,7 +85,7 @@ const CreateBoard = ({ location, history }) => {
     console.log(form);
     const response = (token) =>
       axios.post(
-        `http://localhost:8080/api/study?section=${fixedOptions}`,
+        `http://localhost:8080/api/${type}?section=${fixedOptions}`,
         form,
         {
           headers: {
@@ -97,7 +101,7 @@ const CreateBoard = ({ location, history }) => {
         .then((res) => {
           if (res.status === 201) {
             alert('게시글 작성에 완료되었습니다.');
-            history.push(`/study/board/${res.data}`);
+            history.push(`/${type}/board/${res.data}`);
           }
         })
         .catch((e) => {
@@ -127,14 +131,17 @@ const CreateBoard = ({ location, history }) => {
           name="title"
           value={form.title}
         />
-        <TextField
-          label="모집 인원"
-          type="number"
-          min="0"
-          onChange={onChange}
-          name="applicant"
-          value={form.applicant}
-        />
+        {type === 'study' && (
+          <TextField
+            label="모집 인원"
+            type="number"
+            min="0"
+            onChange={onChange}
+            name="applicant"
+            value={form.applicant}
+          />
+        )}
+
         <Autocomplete
           fullWidth
           multiple
@@ -211,34 +218,5 @@ const category = {
     kor: '프로그래밍 언어',
   },
 };
-const types = [
-  { title: 'c', kor: 'C' },
-  { title: 'cp', kor: 'C++' },
-  { title: 'java', kor: '자바' },
-  { title: 'javascript', kor: '자바스크립트' },
-  { title: 'html', kor: 'HTML' },
-  { title: 'css', kor: 'CSS' },
-  { title: 'swift', kor: '스위프트' },
-  { title: 'python', kor: '파이썬' },
-  { title: 'kotilin', kor: '코틀린' },
-  { title: 'ruby', kor: 'Ruby' },
-  { title: 'objectc', kor: '오브젝트-C' },
-  { title: 'spring', kor: '스프링' },
-  { title: 'nodejs', kor: 'node-js' },
-  { title: 'django', kor: 'node-js' },
-  { title: 'php', kor: 'php' },
-  { title: 'rubyon', kor: 'ruby on rails' },
-  { title: 'reactn', kor: '리액트네이티브' },
-  { title: 'react', kor: '리액트' },
-  { title: 'vue', kor: '뷰' },
-  { title: 'anguler', kor: '앵귤러' },
-  { title: 'svelet', kor: '스벨트' },
-  { title: 'jdbc', kor: 'JDBC' },
-  { title: 'mybatis', kor: 'myBatis' },
-  { title: 'jpa', kor: 'JPA' },
-  { title: 'rdb', kor: '관계형 DB' },
-  { title: 'nosql', kor: 'NoSQL' },
-  { title: 'mysql', kor: 'MySQL' },
-  { title: 'oracle', kor: '오라클 DB' },
-];
+
 export default withRouter(CreateBoard);

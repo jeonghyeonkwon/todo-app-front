@@ -101,13 +101,6 @@ const MyTodo = ({ history }) => {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
-  // //모달 액션
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
   useEffect(() => {
     const todoList = async (token) => {
       setLoading(true);
@@ -235,67 +228,4 @@ const MyTodo = ({ history }) => {
   );
 };
 
-export const cardData = [
-  {
-    id: 12,
-    title: '리액트 공부해요',
-    contents:
-      '리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.',
-    status: 'proceeding',
-    goal: '2021-02-25',
-  },
-  {
-    id: 2,
-    title: '리액트6요',
-    contents:
-      '리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.',
-    status: 'fail',
-    goal: '2001-03-25',
-  },
-  {
-    id: 152,
-    title: '리액트 공요',
-    contents: '앵귤러 공부합',
-    status: 'success',
-    goal: '2091-03-25',
-  },
-  {
-    id: 17772,
-    title: '공부해요',
-    contents: '15asdknlxcvknzeozmdlkfnasldkntlknwelkrtl',
-    status: 'proceeding',
-    goal: '2028-03-25',
-  },
-  {
-    id: 12664,
-    title: '리액트 공부해요',
-    contents:
-      'system.out.println(나이나맹sdkfnaslkrenasdfbnkasdbfklsjadbfkljbsadkjfbkasjdbfkjsabdkfjbsadkjflkjbll)',
-    status: 'proceeding',
-    goal: '2071-03-25',
-  },
-  {
-    id: 15552,
-    title: '뷰 공부해요',
-    contents:
-      '리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.',
-    status: 'fail',
-    goal: '2141-03-25',
-  },
-  {
-    id: 1234,
-    title: '리요',
-    contents:
-      '리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.리액트 모집합니다.',
-    status: 'proceeding',
-    goal: '2052-03-25',
-  },
-  {
-    id: 12352,
-    title: '리액트 공부해요',
-    contents: '리',
-    status: 'success',
-    goal: '2221-03-25',
-  },
-];
 export default withRouter(MyTodo);

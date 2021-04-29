@@ -58,6 +58,9 @@ const StyledModal = ({ handleClose, open, cardId, data }) => {
     });
   };
   useEffect(() => {
+    console.log(data);
+  }, [data]);
+  useEffect(() => {
     setForm({
       ...form,
       goal: selectedDate,
@@ -86,7 +89,7 @@ const StyledModal = ({ handleClose, open, cardId, data }) => {
 
       await response(token)
         .then((res) => {
-          if (res.status === 201) {
+          if (res.status === 200) {
             alert('성공 처리 완료되었습니다.');
             window.location.reload();
           }
@@ -239,14 +242,17 @@ const StyledModal = ({ handleClose, open, cardId, data }) => {
                 >
                   닫기
                 </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  className={classes.button}
-                  onClick={onClickSuccess}
-                >
-                  성공으로!!
-                </Button>
+                {data.status == 'expected' ||
+                  (data.status === 'today' && (
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      className={classes.button}
+                      onClick={onClickSuccess}
+                    >
+                      성공으로!!
+                    </Button>
+                  ))}
               </div>
             </div>
           </Fade>
