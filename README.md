@@ -1,4 +1,4 @@
-# 스터디 TODO Front-end[미완성] (21-04-02기준)
+# 스터디 TODO Front-end[미완성] (21-04-30기준)
 [백엔드 (Spring-boot)](https://github.com/jeonghyeonkwon/todo-app-back)
 
 ## 실행
