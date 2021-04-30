@@ -63,6 +63,8 @@ path|query string|내용|완성 여부|추가할 내용(설명)|
 ### qna 리스트(/qna/:type)
 ![qna 리스트](https://user-images.githubusercontent.com/38342219/116662598-f134e780-a9d0-11eb-8647-a92a4f6ba1b6.PNG)
 
+### 회원정보수정, 탈퇴(/myinfo)
+![todo 회원정보수정](https://user-images.githubusercontent.com/38342219/116666675-33145c80-a9d6-11eb-98c9-7b457a97a55a.PNG)
 
 
 
