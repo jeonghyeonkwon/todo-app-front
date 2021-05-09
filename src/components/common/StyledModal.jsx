@@ -242,17 +242,18 @@ const StyledModal = ({ handleClose, open, cardId, data }) => {
                 >
                   닫기
                 </Button>
-                {data.status == 'expected' ||
-                  (data.status === 'today' && (
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      className={classes.button}
-                      onClick={onClickSuccess}
-                    >
-                      성공으로!!
-                    </Button>
-                  ))}
+                {data.status === 'expected' || data.status === 'today' ? (
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    className={classes.button}
+                    onClick={onClickSuccess}
+                  >
+                    성공으로!!
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </Fade>

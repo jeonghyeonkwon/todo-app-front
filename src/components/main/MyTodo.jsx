@@ -29,6 +29,7 @@ import StyledCard from '../common/StyledCard';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../common/Loading';
+import { Pagination } from '@material-ui/lab';
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -62,9 +63,11 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box
-          style={{
-            border: '2px solid yellowgreen',
-          }}
+          style={
+            {
+              // border: '2px solid yellowgreen',
+            }
+          }
           p={3}
         >
           {children}
@@ -79,9 +82,16 @@ function allyProps(index) {
     'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
+const PagenationForm = styled.div`
+  /* border: 1px solid blue; */
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const MyTodoComponent = styled.div`
   flex: 4;
-  border: 1px solid red;
+  /* border: 2px solid red; */
   background: #fff;
 `;
 const MyTodo = ({ history }) => {
@@ -92,25 +102,66 @@ const MyTodo = ({ history }) => {
   const [list, setList] = useState([]);
   const [data, setData] = useState({});
   const theme = useTheme();
-
+  const [page, setPage] = useState(0);
   const classes = useStyles();
   // 탭 액션
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setPage(0);
   };
   const handleChangeIndex = (index) => {
     setValue(index);
+  };
+  const handleChangePage = (e, value) => {
+    setPage(value - 1);
   };
   useEffect(() => {
     const todoList = async (token) => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8080/api/todo`, {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
+        const response = await axios.get(
+          `http://localhost:8080/api/todo?status=${value}&page=${page}&size=10`,
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+              Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
+            },
           },
-        });
+        );
+        console.log(response);
+        setList(response.data);
+      } catch (e) {
+        console.log(`${e} 함수 안`);
+        alert(e);
+        //alert('내용에 문제가 있습니다. 다시 시도 해주세요');
+        //history.push('/');
+      }
+      setLoading(false);
+    };
+    try {
+      const token = localStorage.getItem('jwttoken');
+      console.log(`token ${token}`);
+      todoList(token);
+    } catch (e) {
+      console.log('2');
+
+      alert('내용에 문제가 있습니다. 다시 시도 해주세요');
+      //history.push('/');
+    }
+  }, [value, page]);
+  useEffect(() => {
+    const todoList = async (token) => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/todo?status=${value}&page=${page}&size=10`,
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+              Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
+            },
+          },
+        );
         console.log(response);
         setList(response.data);
       } catch (e) {
@@ -182,11 +233,8 @@ const MyTodo = ({ history }) => {
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
             <StyledCard handleOpen={handleOpen}></StyledCard>
-            {list
-              .filter(
-                (data) => data.status === 'expected' || data.status === 'today',
-              )
-              .map((card) => (
+            {list.content &&
+              list.content.map((card) => (
                 <StyledCard
                   data={card}
                   status={card.status}
@@ -197,9 +245,8 @@ const MyTodo = ({ history }) => {
               ))}
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            {list
-              .filter((data) => data.status === 'failure')
-              .map((card) => (
+            {list.content &&
+              list.content.map((card) => (
                 <StyledCard
                   data={card}
                   status={card.status}
@@ -210,9 +257,8 @@ const MyTodo = ({ history }) => {
               ))}
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            {list
-              .filter((data) => data.status === 'achieve')
-              .map((card) => (
+            {list.content &&
+              list.content.map((card) => (
                 <StyledCard
                   data={card}
                   status={card.status}
@@ -224,6 +270,16 @@ const MyTodo = ({ history }) => {
           </TabPanel>
         </SwipeableViews>
       )}
+      <PagenationForm>
+        <Pagination
+          count={10}
+          shape="rounded"
+          size="large"
+          page={page + 1}
+          onChange={handleChangePage}
+          count={list.totalPages}
+        />
+      </PagenationForm>
     </MyTodoComponent>
   );
 };
