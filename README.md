@@ -1,4 +1,4 @@
-# 스터디 TODO Front-end[미완성] (21-04-30기준)
+# 스터디 TODO Front-end[미완성] (21-05-09기준)
 [백엔드 (Spring-boot)](https://github.com/jeonghyeonkwon/todo-app-back)
 
 ## 실행
@@ -36,14 +36,17 @@ path|query string|내용|완성 여부|추가할 내용(설명)|
 ![회원가입](https://user-images.githubusercontent.com/38342219/113385250-b71cf980-93c2-11eb-9ab0-b1fb37555b84.PNG)
 
 ### todo(/todo)
-![todo 홈화면](https://user-images.githubusercontent.com/38342219/113385611-68239400-93c3-11eb-899c-8552f72f967f.PNG)
 ![todo 추가](https://user-images.githubusercontent.com/38342219/113385618-6b1e8480-93c3-11eb-9a0b-b3bba785930b.PNG)
 목표 날짜와 현재 날짜를 서버에서 비교하여 진행중, 오늘 마감, 실패를 리스트로 받습니다.
-![todo 실패](https://user-images.githubusercontent.com/38342219/113385723-a456f480-93c3-11eb-9a59-b62e5dbcd238.PNG)
+![todo ing](https://user-images.githubusercontent.com/38342219/117573685-4e891100-b114-11eb-9f29-fb70ffa3e5aa.PNG)
+![todo failurePNG](https://user-images.githubusercontent.com/38342219/117573631-fce08680-b113-11eb-9f56-3b6130b5a447.PNG)
+![todo success](https://user-images.githubusercontent.com/38342219/117573637-010ca400-b114-11eb-8e33-427d6b6aa687.PNG)
+![진행중 성공 체크](https://user-images.githubusercontent.com/38342219/117573735-9314ac80-b114-11eb-8574-4fa9f55855b9.PNG)
+![성공 자세히](https://user-images.githubusercontent.com/38342219/117573736-96a83380-b114-11eb-83f8-1694542281d5.PNG)
+
 
 ### study 홈(/study,/qna)
 ![todo 게시판 section](https://user-images.githubusercontent.com/38342219/116660244-b5e4e980-a9cd-11eb-9e88-13566a34590d.png)
-
 
 ### study 리스트(/study/:type)
 ![todo study 게시판](https://user-images.githubusercontent.com/38342219/116660977-b6ca4b00-a9ce-11eb-8b38-12b69b184db9.PNG)
