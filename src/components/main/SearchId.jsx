@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: 30,
@@ -36,8 +36,31 @@ const SearchId = () => {
     accountName: '',
     tel: '',
   });
+  const onClickSearch = async (e) => {
+    e.preventDefault();
+    const { accountName, tel } = form;
+    console.log(`몇자리 ${tel.length}`);
+    if (!accountName || !tel) {
+      alert('빈 공백을 채워주세요');
+      return;
+    } else if (tel.length < 10 || tel.length > 14) {
+      alert('전화번호를 10자리 이상 13자리 이하로 입력하세요');
+      return;
+    }
+    await axios
+      .post('http://localhost:8080/api/search-id', form)
+      .then((res) => {
+        if (res.status === 200) {
+        }
+      })
+      .catch((e) => {
+        alert(e.response.data.message);
+        window.location.reload();
+      });
+  };
   const onChange = (e) => {
     const { value, name } = e.target;
+
     setForm({
       ...form,
       [name]: value,
@@ -81,10 +104,10 @@ const SearchId = () => {
           value={form.tel}
         />
         <div className={classes.btng}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={onClickSearch}>
             아이디 찾기
           </Button>
-          <Button variant="contained" color="secondary" href="/search/searchId">
+          <Button variant="contained" color="secondary" href="/search/searchPw">
             비밀번호 찾기
           </Button>
         </div>
