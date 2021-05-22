@@ -82,6 +82,7 @@ const MyInfo = ({ history }) => {
   const [account, setAccount] = useState({
     id: 0,
     accountId: '',
+    tel: '',
     location: '',
     name: '',
   });
@@ -91,13 +92,14 @@ const MyInfo = ({ history }) => {
   const onClickUpdate = async (event, updateName) => {
     event.preventDefault();
 
-    const { currentPw, newPw, reNewPw, name, local } = form;
+    const { currentPw, newPw, reNewPw, name, tel, local } = form;
     switch (updateName) {
       case 'password':
         if (!currentPw || !newPw || !reNewPw) {
           alert('빈 공간을 채워주세요');
           return;
         }
+
         if (newPw !== reNewPw) {
           alert('새로운 비밀번호와 새로운 비밀번호가 일치하지 않습니다.');
           return;
@@ -105,6 +107,12 @@ const MyInfo = ({ history }) => {
         break;
       case 'name':
         if (!name) {
+          alert('빈 공간을 채워주세요');
+          return;
+        }
+        break;
+      case 'tel':
+        if (!tel) {
           alert('빈 공간을 채워주세요');
           return;
         }
@@ -190,6 +198,7 @@ const MyInfo = ({ history }) => {
       currentPw: '',
       newPw: '',
       reNewPw: '',
+      tel: '',
       name: '',
       local: '',
       withDrawalPw: '',
@@ -350,6 +359,40 @@ const MyInfo = ({ history }) => {
               aria-controls="panel4bh-content"
               id="panel4bh-header"
             >
+              <Typography className={classes.heading}>전화번호</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {account.tel}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.detail}>
+              <TextField
+                label="바뀐 전화번호"
+                type="text"
+                variant="outlined"
+                className={classes.textField}
+                value={form.tel}
+                name="tel"
+                onChange={handleChangeForm}
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+                onClick={(e) => onClickUpdate(e, 'tel')}
+              >
+                수정하기
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === 'panel5'}
+            onChange={handleChange('panel5')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel5bh-content"
+              id="panel5bh-header"
+            >
               <Typography className={classes.heading}>지역</Typography>
               <Typography className={classes.secondaryHeading}>
                 {account.location}
@@ -383,13 +426,13 @@ const MyInfo = ({ history }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === 'panel5'}
-            onChange={handleChange('panel5')}
+            expanded={expanded === 'panel6'}
+            onChange={handleChange('panel6')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel5bh-content"
-              id="panel5bh-header"
+              aria-controls="panel6bh-content"
+              id="panel6bh-header"
             >
               <Typography className={clsx(classes.heading, classes.withdrawal)}>
                 탈퇴하기

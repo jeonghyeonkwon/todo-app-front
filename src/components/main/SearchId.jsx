@@ -29,13 +29,25 @@ const SearchIdComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
+const FindIdList = styled.div`
+  background: #d1e7fb;
+  width: 100%;
 
+  padding: 50px;
+  span {
+    display: block;
+    color: green;
+    font-size: 20px;
+    font-weight: 400;
+  }
+`;
 const SearchId = () => {
   const classes = useStyles();
   const [form, setForm] = useState({
     accountName: '',
     tel: '',
   });
+  const [findId, setFindId] = useState([]);
   const onClickSearch = async (e) => {
     e.preventDefault();
     const { accountName, tel } = form;
@@ -48,14 +60,21 @@ const SearchId = () => {
       return;
     }
     await axios
-      .post('http://localhost:8080/api/search-id', form)
+      .get(
+        `http://localhost:8080/api/search-id?accountName=${form.accountName}&tel=${form.tel}`,
+      )
       .then((res) => {
         if (res.status === 200) {
+          console.log(res.data);
+          setFindId(res.data);
         }
+        console.log(res);
       })
       .catch((e) => {
-        alert(e.response.data.message);
-        window.location.reload();
+        if (e.response.status === 404) {
+          alert(e.response.data);
+          window.location.reload();
+        }
       });
   };
   const onChange = (e) => {
@@ -90,23 +109,42 @@ const SearchId = () => {
     <SearchIdComponent>
       <Paper elevation={3} className={classes.paper}>
         <Typography variant="h4">아이디 찾기</Typography>
+        {!findId.length ? (
+          <>
+            <TextField
+              label="이름"
+              onChange={onChange}
+              name="accountName"
+              value={form.accountName}
+            />
+            <TextField
+              label="전화번호"
+              onChange={onChange}
+              name="tel"
+              value={form.tel}
+            />
+          </>
+        ) : (
+          <>
+            <FindIdList>
+              <Typography variant="h5">검색된 아이디</Typography>
+              {findId.map((data) => (
+                <span>{data}</span>
+              ))}
+            </FindIdList>
+          </>
+        )}
 
-        <TextField
-          label="이름"
-          onChange={onChange}
-          name="accountName"
-          value={form.accountName}
-        />
-        <TextField
-          label="전화번호"
-          onChange={onChange}
-          name="tel"
-          value={form.tel}
-        />
         <div className={classes.btng}>
-          <Button variant="contained" color="primary" onClick={onClickSearch}>
-            아이디 찾기
-          </Button>
+          {findId.length ? (
+            <Button variant="contained" color="primary" href="/login">
+              로그인
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" onClick={onClickSearch}>
+              아이디 찾기
+            </Button>
+          )}
           <Button variant="contained" color="secondary" href="/search/searchPw">
             비밀번호 찾기
           </Button>

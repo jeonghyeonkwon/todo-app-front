@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
 import { check } from '../../modules/user';
 const Support = styled.div`
   margin-top: 30px;
-  label,
-  a {
+
+  label {
     font-size: 14px;
     display: block;
   }
-
-  a {
-    margin-top: 5px;
+  div {
     text-align: right;
-    cursor: pointer;
-    transition: 0.3s;
-    &:hover {
-      color: dodgerblue;
+    a {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 19px;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover {
+        color: dodgerblue;
+      }
     }
-  }
-  span {
-    /* visibility: hidden; */
-    display: block;
-    margin-top: 40px;
-    text-align: center;
-    color: crimson;
   }
 `;
 const BtnGroup = styled.div`
@@ -141,7 +138,11 @@ const Login = ({ history }) => {
         </Field>
         <Support>
           <label>회원가입 정보가 기억나지 않나요???</label>
-          <a>아이디/비밀번호 찾기</a>
+          <div>
+            <Link to="/search/searchId">아이디 찾기</Link>
+            <b>/</b>
+            <Link to="/search/searchPw">비밀번호 찾기</Link>
+          </div>
         </Support>
         <BtnGroup>
           <button type="submit" onClick={loginHandler}>
