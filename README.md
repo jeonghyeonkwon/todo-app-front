@@ -1,4 +1,4 @@
-# 스터디 TODO Front-end[미완성] (21-05-09기준)
+# 스터디 TODO Front-end[미완성] (21-05-13기준)
 [백엔드 (Spring-boot)](https://github.com/jeonghyeonkwon/todo-app-back)
 
 ## 실행
@@ -67,7 +67,8 @@ path|query string|내용|완성 여부|추가할 내용(설명)|
 ![qna 리스트](https://user-images.githubusercontent.com/38342219/116662598-f134e780-a9d0-11eb-8647-a92a4f6ba1b6.PNG)
 
 ### 회원정보수정, 탈퇴(/myinfo)
-![todo 회원정보수정](https://user-images.githubusercontent.com/38342219/116666675-33145c80-a9d6-11eb-98c9-7b457a97a55a.PNG)
+![회원 정보수정 전화번호 추가](https://user-images.githubusercontent.com/38342219/118088352-e7b07400-b401-11eb-8e96-6a5bae079cef.PNG)
+
 
 
 
