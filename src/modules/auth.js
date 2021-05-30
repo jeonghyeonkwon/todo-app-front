@@ -8,10 +8,8 @@ import * as authApi from '../lib/api/auth'
 
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
 const initialState = {
-
     auth: {
         token: null,
-
     },
     authError: null,
 }
@@ -20,9 +18,6 @@ export const login = createAction(LOGIN, ({ username, password }) => ({
 }));
 const loginSaga = createRequestSaga(LOGIN, authApi.login);
 
-export function* authSaga() {
-    yield takeLatest(LOGIN, loginSaga);
-}
 const auth = handleActions({
     [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
         ...state,
@@ -35,4 +30,7 @@ const auth = handleActions({
     })
 }, initialState)
 
+export function* authSaga() {
+    yield takeLatest(LOGIN, loginSaga);
+}
 export default auth;

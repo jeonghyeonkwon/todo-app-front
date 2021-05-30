@@ -28,17 +28,31 @@ const Support = styled.div`
 `;
 const BtnGroup = styled.div`
   margin-top: 40px;
+  text-align: center;
+  a,
   button {
     display: block;
     width: 100%;
     margin: 10px 5px 10px 0px;
     outline: none;
+    cursor: pointer;
     font-size: 20px;
     padding: 5px;
     border-radius: 5px;
+    border: 1px solid black;
+    transition: 0.5s;
+    &:hover {
+      color: #fff;
+    }
     &[type='submit'] {
       background: rgb(205, 224, 246);
     }
+    &[type='submit']:hover {
+      background: rgb(59, 89, 152);
+    }
+  }
+  a:hover {
+    background: gray;
   }
 `;
 const Field = styled.div`
@@ -148,7 +162,7 @@ const Login = ({ history }) => {
           <button type="submit" onClick={loginHandler}>
             로그인
           </button>
-          <button type="button">회원가입</button>
+          <Link to="/register">회원가입</Link>
         </BtnGroup>
       </LoginForm>
     </LoginComponent>
