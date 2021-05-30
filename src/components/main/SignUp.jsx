@@ -131,7 +131,7 @@ const SignUp = ({ history }) => {
     const { accountId } = form;
     try {
       const response = await axios.get(
-        `http://localhost:8080/validate?accountId=${accountId}`,
+        `http://localhost:8080/api/validate?accountId=${accountId}`,
       );
       console.log(response);
       setMessage(response.data.message);
@@ -170,7 +170,7 @@ const SignUp = ({ history }) => {
     }
 
     await axios
-      .post('http://localhost:8080/register', form)
+      .post('http://localhost:8080/api/register', form)
       .then((res) => {
         if (res.status === 201) {
           alert('회원 가입이 완료되었습니다.');
@@ -200,7 +200,7 @@ const SignUp = ({ history }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8080/register');
+        const response = await axios.get('http://localhost:8080/api/register');
         setLocal(response.data.local);
         console.log(response);
       } catch (e) {

@@ -6,7 +6,10 @@ export default (Comp, option, adminRoute = null) => {
             user.account.accountId
         )
         useEffect(() => {
-            if (!isLogIn && option) {
+            if (isLogIn && option === false) {
+                alert('로그인 사용자는 접근할 수 없습니다. 로그아웃 후 이용해 주세요.');
+                props.history.push('/');
+            } else if (!isLogIn && option) {
                 props.history.push('/login');
             }
         }, []);

@@ -18,24 +18,26 @@ import BoardDetailContainer from './containers/BoardDetailContainer';
 import MyInfoContainer from './containers/user/MyInfoContainer';
 import SearchAuthContainer from './containers/user/SearchAuthContainer';
 
+import Auth from './hoc/auth';
+
 const App = () => {
   return (
     <div>
       <FramePage>
-        <Route path="/" component={HomeContainer} exact />
-        <Route path="/login" component={LoginContainer} />
-        <Route path="/register" component={RegisterContainer} />
-        <Route path="/search/:type" component={SearchAuthContainer} />
-        <Route path="/todo" component={TodoContainer} />
-        <Route path="/myinfo" component={MyInfoContainer} />
-        <Route path="/study" component={BoardIntroContainer} exact />
-        <Route path="/study/:type" component={StudyBoardContainer} exact />
-        <Route path="/study/board/:number" component={BoardDetailContainer} exact />
-        <Route path="/study/:type/write" component={StudyWriteContainer} />
-        <Route path="/qna" component={BoardIntroContainer} exact />
-        <Route path="/qna/:type" component={QnaBoardContainer} exact />
-        <Route path="/qna/board/:number" component={BoardDetailContainer} exact />
-        <Route path="/qna/:type/write" component={QnaWriteContainer} />
+        <Route path="/" component={Auth(HomeContainer, null)} exact />
+        <Route path="/login" component={Auth(LoginContainer, false)} />
+        <Route path="/register" component={Auth(RegisterContainer, false)} />
+        <Route path="/search/:type" component={Auth(SearchAuthContainer, null)} />
+        <Route path="/todo" component={Auth(TodoContainer, true)} />
+        <Route path="/myinfo" component={Auth(MyInfoContainer, true)} />
+        <Route path="/study" component={Auth(BoardIntroContainer, null)} exact />
+        <Route path="/study/:type" component={Auth(StudyBoardContainer, null)} exact />
+        <Route path="/study/board/:number" component={Auth(BoardDetailContainer, true)} exact />
+        <Route path="/study/:type/write" component={Auth(StudyWriteContainer, true)} />
+        <Route path="/qna" component={Auth(BoardIntroContainer, null)} exact />
+        <Route path="/qna/:type" component={Auth(QnaBoardContainer, null)} exact />
+        <Route path="/qna/board/:number" component={Auth(BoardDetailContainer, true)} exact />
+        <Route path="/qna/:type/write" component={Auth(QnaWriteContainer, true)} />
       </FramePage>
 
     </div>

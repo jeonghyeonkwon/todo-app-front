@@ -195,6 +195,7 @@ const Header = ({ history }) => {
     dispatch(logout());
 
     history.push('/');
+    window.location.reload();
   };
   return (
     <HeaderComponent>

@@ -113,7 +113,7 @@ const Login = ({ history }) => {
     if (authError) {
       //console.log(`authError : ${authError} `);
       alert('로그인에 실패하였습니다. 다시 확인해 주세요.');
-      window.location.reload();
+      // window.location.reload();
     }
   }, [token, authError]);
   const loginHandler = (e) => {
