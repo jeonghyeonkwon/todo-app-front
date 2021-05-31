@@ -1,17 +1,12 @@
 import { createAction, handleActions } from 'redux-actions';
-
 import { takeLatest, call } from 'redux-saga/effects';
-
 import * as authAPI from '../lib/api/auth'
-
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga'
+import produce from 'immer'
 
 const TEMP_SET_USER = 'user/TEMP_SET_USER';
-
 const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes('user/CHECK');
-
 const LOGOUT = 'user/LOGOUT';
-
 
 export const check = createAction(CHECK, token => token);
 export const logout = createAction(LOGOUT);
@@ -28,13 +23,11 @@ function checkFailureSaga() {
 }
 function logoutSaga() {
     try {
-
         localStorage.removeItem('jwttoken');
     } catch (e) {
         console.log(e);
     }
 }
-
 export function* userSaga() {
     yield takeLatest(CHECK, checkSaga);
     yield takeLatest(CHECK_FAILURE, checkFailureSaga);
@@ -50,25 +43,20 @@ const initialState = {
 }
 export default handleActions(
     {
-        [CHECK_SUCCESS]: (state, action) => ({
-            ...state,
-            account: action.payload,
-            checkError: null,
+        [CHECK_SUCCESS]: (state, { payload: auth }) => produce(state, draft => {
+            draft.account.accountId = auth.accountId;
+            draft.account.accountName = auth.accountName;
+            draft.checkError = null;
         }),
-        [CHECK_FAILURE]: (state, { payload: error }) => ({
-            ...state,
-            account: {
-                accountId: null,
-                accountName: null
-            },
-            checkError: error,
+        [CHECK_FAILURE]: (state, { payload: error }) => produce(state, draft => {
+            draft.account.accountId = null;
+            draft.account.accountName = null;
+            draft.checkError = error;
         }),
-        [LOGOUT]: state => ({
-            ...state,
-            account: {
-                accountId: null,
-                accountName: null
-            },
+
+        [LOGOUT]: state => produce(state, draft => {
+            draft.account.accountId = null;
+            draft.account.accountName = null;
         }),
     }, initialState
 )

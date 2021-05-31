@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
-export default useOnMounted = effect => {
+
+export default function useOnMounted(effect) {
     useEffect(effect, []);
 }

@@ -112,130 +112,41 @@ const SignUpComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
-const SignUp = ({ history }) => {
-  const [loading, setLoading] = useState(false);
-  const [local, setLocal] = useState([]);
-  const [form, setForm] = useState({
-    accountId: '',
-    password: '',
-    rePassword: '',
-    name: '',
-    tel: '',
-    location: '서울',
-    validateCheck: false,
-  });
-  const [message, setMessage] = useState('');
-
-  const duplicateCheck = async (e) => {
-    e.preventDefault();
-    const { accountId } = form;
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/api/validate?accountId=${accountId}`,
-      );
-      console.log(response);
-      setMessage(response.data.message);
-      setForm({
-        ...form,
-        validateCheck: true,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const {
-      accountId,
-      password,
-      rePassword,
-      name,
-      tel,
-      location,
-      validateCheck,
-    } = form;
-    console.log('validate', form.validateCheck);
-    if (!validateCheck) {
-      console.log('validate 내부', form.validateCheck);
-      setMessage('ID_CHECK');
-      return;
-    }
-    if (!accountId || !password || !rePassword || !name || !tel || !location) {
-      setMessage('NULL_CONTENT');
-      return;
-    }
-    if (password !== rePassword) {
-      setMessage('NOT_EQUALS');
-      return;
-    }
-
-    await axios
-      .post('http://localhost:8080/api/register', form)
-      .then((res) => {
-        if (res.status === 201) {
-          alert('회원 가입이 완료되었습니다.');
-          history.push('/');
-        }
-      })
-      .catch((e) => {
-        alert(e.response.data.message);
-        window.location.reload();
-      });
-  };
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    name === 'accountId'
-      ? setForm({
-          ...form,
-          [name]: value,
-          validateCheck: false,
-        })
-      : setForm({
-          ...form,
-          [name]: value,
-        });
-  };
-  //지역 받기
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get('http://localhost:8080/api/register');
-        setLocal(response.data.local);
-        console.log(response);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+const SignUp = ({
+  local,
+  loading,
+  onChange,
+  form,
+  message,
+  onClickIdCheck,
+  onSubmitRegister,
+}) => {
   //전화번호 하이픈
-  useEffect(() => {
-    console.log(form.tel);
-    if (form.tel.length === 10) {
-      console.log('10자리 도달', form.tel);
-      setForm({
-        ...form,
-        tel: form.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-      });
-    }
-    if (form.tel.length === 13) {
-      console.log('13자리 도달', form.tel);
-      setForm({
-        ...form,
-        tel: form.tel
-          .replace(/-/g, '')
-          .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-      });
-    }
-  }, [form.tel]);
+  // useEffect(() => {
+  //   console.log(form.tel);
+  //   if (form.tel.length === 10) {
+  //     console.log('10자리 도달', form.tel);
+  //     setForm({
+  //       ...form,
+  //       tel: form.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+  //     });
+  //   }
+  //   if (form.tel.length === 13) {
+  //     console.log('13자리 도달', form.tel);
+  //     setForm({
+  //       ...form,
+  //       tel: form.tel
+  //         .replace(/-/g, '')
+  //         .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
+  //     });
+  //   }
+  // }, [form.tel]);
   return (
     <SignUpComponent>
       {loading ? (
         <Loading></Loading>
       ) : (
-        <SignUpForm>
+        <SignUpForm onSubmit={onSubmitRegister}>
           <h1>회원가입</h1>
           <Field>
             <label>아이디</label>
@@ -246,7 +157,9 @@ const SignUp = ({ history }) => {
                 name="accountId"
                 value={form.accountId}
               />
-              <button onClick={duplicateCheck}>중복 확인</button>
+              <button type="button" onClick={onClickIdCheck}>
+                중복 확인
+              </button>
             </div>
           </Field>
           <Field>
@@ -308,9 +221,7 @@ const SignUp = ({ history }) => {
             </MessageLabel>
           )}
           <FormButton>
-            <button type="submit" onClick={onSubmit}>
-              회원가입 완료
-            </button>
+            <button type="submit">회원가입 완료</button>
             <button type="button">뒤로가기</button>
           </FormButton>
         </SignUpForm>

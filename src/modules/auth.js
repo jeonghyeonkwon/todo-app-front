@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
-import producer from 'immer';
+import produce from 'immer';
 import { takeLatest } from 'redux-saga/effects';
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
 
@@ -19,14 +19,13 @@ export const login = createAction(LOGIN, ({ username, password }) => ({
 const loginSaga = createRequestSaga(LOGIN, authApi.login);
 
 const auth = handleActions({
-    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
-        ...state,
-        authError: null,
-        auth
+
+    [LOGIN_SUCCESS]: (state, { payload: auth }) => produce(state, draft => {
+        draft.authError = null;
+        draft.auth.token = auth.token;
     }),
-    [LOGIN_FAILURE]: (state, { payload: error }) => ({
-        ...state,
-        authError: error,
+    [LOGIN_FAILURE]: (state, { payload: error }) => produce(state, draft => {
+        draft.authError = error;
     })
 }, initialState)
 
