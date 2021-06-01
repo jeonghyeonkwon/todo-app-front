@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Link, withRouter } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../modules/auth';
-import { check } from '../../modules/user';
+import { Link } from 'react-router-dom';
 const Support = styled.div`
   margin-top: 30px;
 
@@ -88,46 +85,7 @@ const LoginComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
-const Login = ({ history }) => {
-  const [form, setForm] = useState({ username: '', password: '' });
-  const dispatch = useDispatch();
-
-  const { token, authError } = useSelector(({ auth }) => ({
-    token: auth.auth.token,
-
-    authError: auth.authError,
-  }));
-  useEffect(() => {
-    //console.log(token);
-    if (token) {
-      //console.log(`token : ${token}`);
-      try {
-        localStorage.setItem('jwttoken', JSON.stringify(token));
-        dispatch(check(token));
-      } catch (e) {
-        console.log('localStorage 작동을 하지 않습니다.');
-      } finally {
-        history.push('/');
-      }
-    }
-    if (authError) {
-      //console.log(`authError : ${authError} `);
-      alert('로그인에 실패하였습니다. 다시 확인해 주세요.');
-      // window.location.reload();
-    }
-  }, [token, authError]);
-  const loginHandler = (e) => {
-    e.preventDefault();
-    const { username, password } = form;
-    dispatch(login({ username, password }));
-  };
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
+const Login = ({ onChange, onClickLogin, form }) => {
   return (
     <LoginComponent>
       <LoginForm>
@@ -159,7 +117,7 @@ const Login = ({ history }) => {
           </div>
         </Support>
         <BtnGroup>
-          <button type="submit" onClick={loginHandler}>
+          <button type="submit" onClick={onClickLogin}>
             로그인
           </button>
           <Link to="/register">회원가입</Link>
@@ -169,4 +127,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+export default Login;

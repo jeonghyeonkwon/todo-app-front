@@ -1,31 +1,9 @@
-import { message } from 'antd';
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Loading from '../common/Loading';
 import { withRouter } from 'react-router-dom';
-const msg = {
-  ID_OK: {
-    message: '해당 아이디를 사용할 수 있습니다.',
-    color: 'yellowgreen',
-  },
-  ID_NO: {
-    message: '이미 사용중인 아이디 입니다.',
-    color: 'crimson',
-  },
-  ID_CHECK: {
-    message: '아이디 중복 검사를 해주세요',
-    color: 'crimson',
-  },
-  NULL_CONTENT: {
-    message: '빈 정보를 채워 주세요',
-    color: 'crimson',
-  },
-  NOT_EQUALS: {
-    message: '비밀번호와 비밀번호 재입력이 맞지 않습니다.',
-    color: 'crimson',
-  },
-};
+import { registerMessage } from '../../data/messageData';
+
 const FormButton = styled.div`
   padding: 20px;
   display: block;
@@ -38,15 +16,25 @@ const FormButton = styled.div`
     margin: 0px 10px;
     padding: 5px;
     color: #fff;
+    width: 150px;
+    height: 40px;
     border-radius: 5px;
     font-weight: bold;
     outline: none;
   }
   button[type='submit'] {
     background: dodgerblue;
+    transition: 0.4s;
+    &:hover {
+      background: #00537a;
+    }
   }
   button[type='button'] {
     background: gray;
+    transition: 0.4s;
+    &:hover {
+      background: #c39797;
+    }
   }
 `;
 
@@ -99,7 +87,7 @@ const SignUpForm = styled.form`
 
   background: #fff;
   width: 500px;
-  height: 650px;
+  height: 700px;
   border-radius: 10px;
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -120,6 +108,7 @@ const SignUp = ({
   message,
   onClickIdCheck,
   onSubmitRegister,
+  onClickBack,
 }) => {
   //전화번호 하이픈
   // useEffect(() => {
@@ -216,13 +205,15 @@ const SignUp = ({
             )}
           </Field>
           {message && (
-            <MessageLabel color={msg[message].color}>
-              {msg[message].message}
+            <MessageLabel color={registerMessage[message].color}>
+              {registerMessage[message].message}
             </MessageLabel>
           )}
           <FormButton>
             <button type="submit">회원가입 완료</button>
-            <button type="button">뒤로가기</button>
+            <button type="button" onClick={onClickBack}>
+              뒤로가기
+            </button>
           </FormButton>
         </SignUpForm>
       )}

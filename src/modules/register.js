@@ -16,7 +16,7 @@ const [LOCALLIST, LOCALLIST_SUCCESS, LOCALLIST_FAILURE] = createRequestActionTyp
 
 const [IDCHECK, IDCHECK_SUCCESS, IDCHECK_FAILURE] = createRequestActionTypes(CONST_IDCHECK);
 const CHANGE_FIELD = 'register/CHANGE_FIELD';
-
+const CHANGE_MESSAGE = 'register/CHANGE_MESSAGE';
 const INITIALIZE = 'register/INITIALIZE';
 export const initialize = createAction(INITIALIZE);
 
@@ -40,6 +40,11 @@ export const changeField = createAction(
     ({ key, value }) => ({
         key, value
     })
+)
+
+export const changeMessage = createAction(
+    CHANGE_MESSAGE,
+    value => value
 )
 export const localList = createAction(LOCALLIST);
 const localSage = createRequestSaga(LOCALLIST, registerApi.localList);
@@ -66,6 +71,9 @@ export default handleActions({
     }),
     [CHANGE_FIELD]: (state, { payload: { key, value } }) => produce(state, draft => {
         draft.form[key] = value;
+    }),
+    [CHANGE_MESSAGE]: (state, { payload: value }) => produce(state, draft => {
+        draft.msg = value;
     }),
     [REGISTER_SUCCESS]: (state, { payload: auth }) => produce(state, draft => {
         draft.authError = null;

@@ -1,7 +1,7 @@
 import client from './client';
 
-export const login = ({ username, password }) =>
-    client.post('/authenticate', { username, password });
+export const login = (form) =>
+    client.post('/authenticate', form);
 
 export const check = (token) =>
     client.get('/auth/check', {

@@ -8,21 +8,20 @@ import * as authApi from '../lib/api/auth'
 
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
 const initialState = {
-    auth: {
+
+    user: {
         token: null,
     },
     authError: null,
 }
-export const login = createAction(LOGIN, ({ username, password }) => ({
-    username, password
-}));
+export const login = createAction(LOGIN, form => form);
 const loginSaga = createRequestSaga(LOGIN, authApi.login);
 
 const auth = handleActions({
 
     [LOGIN_SUCCESS]: (state, { payload: auth }) => produce(state, draft => {
         draft.authError = null;
-        draft.auth.token = auth.token;
+        draft.user.token = auth.token;
     }),
     [LOGIN_FAILURE]: (state, { payload: error }) => produce(state, draft => {
         draft.authError = error;

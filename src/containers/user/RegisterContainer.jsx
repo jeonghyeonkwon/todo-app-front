@@ -8,6 +8,7 @@ import {
   idCheck,
   registerUser,
   initialize,
+  changeMessage,
   CONST_LOCALLIST,
 } from '../../modules/register';
 const RegisterContainer = ({ history }) => {
@@ -62,19 +63,25 @@ const RegisterContainer = ({ history }) => {
     e.preventDefault();
     const { accountId, password, rePassword, name, validateCheck } = form;
     if ([accountId, password, rePassword, name].includes('')) {
-      alert('공백을 채워주세요');
+      dispatch(changeMessage('NULL_CONTENT'));
       return;
     }
     if (password !== rePassword) {
-      alert('비밀번호가 서로 일치하지 않습니다.');
+      dispatch(changeMessage('NOT_EQUALS'));
       return;
     }
     if (!validateCheck) {
-      alert('아이디 중복 체크를 해주세요');
+      dispatch(changeMessage('ID_CHECK'));
       return;
     }
     dispatch(registerUser(form));
   });
+  const onClickBack = (e) => {
+    e.preventDefault();
+    console.log('뒤로가기');
+    console.log(history);
+    history.goBack();
+  };
   useEffect(() => {
     if (authError) {
       alert('회원가입에 실패하였습니다. 다시 시도해 주세요');
@@ -99,6 +106,7 @@ const RegisterContainer = ({ history }) => {
       onClickIdCheck={onClickIdCheck}
       message={msg}
       onSubmitRegister={onSubmitRegister}
+      onClickBack={onClickBack}
     />
   );
 };
