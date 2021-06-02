@@ -13,3 +13,12 @@ export const check = (token) =>
 
 
 export const logout = () => client.post('/logout')
+
+
+//아이디 찾기
+export const searchId = (form) => client.get(`/search-id?accountName=${form.accountName}&tel=${form.tel}`);
+
+//비밀번호 찾기
+export const searchPw = (form) => client.get(`/search-pw?accountId=${form.accountId}&accountName=${form.accountName}&tel=${form.tel}`);
+// 비밀번호 변경
+export const updatePw = (form) => client.patch(`/search-pw/${form.id}`, form);

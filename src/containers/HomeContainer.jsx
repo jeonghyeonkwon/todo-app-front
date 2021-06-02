@@ -12,7 +12,6 @@ const Title = styled.div``;
 
 const HomeComponent = styled.div`
   flex: 4;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,10 +40,6 @@ const HomeContainer = () => {
     };
     fetchData();
   }, []);
-  useEffect(() => {
-    console.log('form');
-    console.log(form);
-  }, form);
   return (
     <HomeComponent>
       {loading ? (
