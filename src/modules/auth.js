@@ -18,6 +18,10 @@ const [SEARCHPW, SEARCHPW_SUCCESS, SEARCHPW_FAILURE] = createRequestActionTypes(
 
 const [UPDATEPW, UPDATEPW_SUCCESS, UPDATEPW_FAILURE] = createRequestActionTypes(CONST_UPDATEPW);
 
+
+const INITIALIZE = 'auth/INITIALIZE';
+export const initialize = createAction(INITIALIZE);
+
 const initialState = {
     search: {
         searchId: [],
@@ -48,6 +52,7 @@ const searchPwSaga = createRequestSaga(SEARCHPW, authApi.searchPw);
 
 
 const auth = handleActions({
+    [INITIALIZE]: state => initialState,
     [SEARCH_MESSAGE]: (state, { payload }) => produce(state, draft => {
         draft.search.msg = payload;
     }),

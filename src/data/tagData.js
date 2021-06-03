@@ -9,7 +9,6 @@ export const kind = {
         backGround: '#659BD3',
         kor: 'C++',
     },
-
     java: {
         fontColor: '#E32B2C',
         backGround: '#024D73',

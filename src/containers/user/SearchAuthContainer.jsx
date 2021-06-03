@@ -8,6 +8,7 @@ import {
   updatePassword,
   CONST_SEARCHID,
   CONST_SEARCHPW,
+  initialize,
 } from '../../modules/auth';
 import SearchResult from '../../components/main/SearchResult';
 import Search from '../../components/main/Search';
@@ -64,6 +65,9 @@ const SearchAuthContainer = ({ location, history }) => {
       });
     }
   }, [searchPw]);
+  useEffect(() => {
+    return dispatch(initialize());
+  }, []);
   const onChange = useCallback((e) => {
     const { name, value } = e.target;
     setForm({
@@ -78,7 +82,6 @@ const SearchAuthContainer = ({ location, history }) => {
       ...newPassword,
       [name]: value,
     });
-    console.log(`name : ${name} value ${value}`);
   });
   const onClickUpdatePw = useCallback(
     (e) => {
