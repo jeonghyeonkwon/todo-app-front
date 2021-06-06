@@ -10,11 +10,11 @@ export const CONST_REGISTER = 'register/REGISTER';
 export const CONST_LOCALLIST = 'register/LOCALLIST';
 export const CONST_IDCHECK = 'register/IDCHECK';
 
-const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(CONST_REGISTER);
+export const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes('register/REGISTER');
 
-const [LOCALLIST, LOCALLIST_SUCCESS, LOCALLIST_FAILURE] = createRequestActionTypes(CONST_LOCALLIST);
+export const [LOCALLIST, LOCALLIST_SUCCESS, LOCALLIST_FAILURE] = createRequestActionTypes('register/LOCALLIST');
 
-const [IDCHECK, IDCHECK_SUCCESS, IDCHECK_FAILURE] = createRequestActionTypes(CONST_IDCHECK);
+export const [IDCHECK, IDCHECK_SUCCESS, IDCHECK_FAILURE] = createRequestActionTypes('register/IDCHECK');
 const CHANGE_FIELD = 'register/CHANGE_FIELD';
 const CHANGE_MESSAGE = 'register/CHANGE_MESSAGE';
 const INITIALIZE = 'register/INITIALIZE';

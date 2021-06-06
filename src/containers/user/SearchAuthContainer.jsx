@@ -6,8 +6,8 @@ import {
   findPw,
   searchMessage,
   updatePassword,
-  CONST_SEARCHID,
-  CONST_SEARCHPW,
+  SEARCHID,
+  SEARCHPW,
   initialize,
 } from '../../modules/auth';
 import SearchResult from '../../components/main/SearchResult';
@@ -24,8 +24,8 @@ const SearchAuthContainer = ({ location, history }) => {
     idLoading,
     pwLoading,
   } = useSelector(({ auth, loading }) => ({
-    idLoading: loading[CONST_SEARCHID],
-    pwLoading: loading[CONST_SEARCHPW],
+    idLoading: loading[SEARCHID],
+    pwLoading: loading[SEARCHPW],
     searchId: auth.search.searchId,
     searchPw: auth.search.searchPw,
     msg: auth.search.msg,

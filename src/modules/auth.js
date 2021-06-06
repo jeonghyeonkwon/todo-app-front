@@ -6,17 +6,14 @@ import createRequestSaga, { createRequestActionTypes } from '../lib/createReques
 
 import * as authApi from '../lib/api/auth'
 
-export const CONST_SEARCHID = 'auth/SEARCHID';
-export const CONST_SEARCHPW = 'auth/SEARCHPW';
-export const CONST_UPDATEPW = 'auth/UPDATEPW';
 //로그인
-const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
+export const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('auth/LOGIN');
 //아이디찾기
-const [SEARCHID, SEARCHID_SUCCESS, SEARCHID_FAILURE] = createRequestActionTypes(CONST_SEARCHID);
+export const [SEARCHID, SEARCHID_SUCCESS, SEARCHID_FAILURE] = createRequestActionTypes('auth/SEARCHID');
 //비밀번호찾기
-const [SEARCHPW, SEARCHPW_SUCCESS, SEARCHPW_FAILURE] = createRequestActionTypes(CONST_SEARCHPW);
+export const [SEARCHPW, SEARCHPW_SUCCESS, SEARCHPW_FAILURE] = createRequestActionTypes('auth/SEARCHPW');
 
-const [UPDATEPW, UPDATEPW_SUCCESS, UPDATEPW_FAILURE] = createRequestActionTypes(CONST_UPDATEPW);
+export const [UPDATEPW, UPDATEPW_SUCCESS, UPDATEPW_FAILURE] = createRequestActionTypes('auth/UPDATEPW');
 
 
 const INITIALIZE = 'auth/INITIALIZE';

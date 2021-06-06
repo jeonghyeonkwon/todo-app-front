@@ -198,8 +198,10 @@ const SignUp = ({
                 value={form.location}
                 onChange={onChange}
               >
-                {local.map((x, i) => (
-                  <option key={x}>{x}</option>
+                {local.map((data, i) => (
+                  <option key={data.eng} value={data.kor}>
+                    {data.kor}
+                  </option>
                 ))}
               </select>
             )}

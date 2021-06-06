@@ -29,3 +29,9 @@ export const menuData = [
     },
 ];
 
+export const boardTitle = {
+    language: '프로그래밍 언어',
+    mobile: '모바일',
+    web: '웹',
+    db: '데이터 베이스',
+};

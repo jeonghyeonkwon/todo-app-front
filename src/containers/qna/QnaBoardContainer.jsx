@@ -8,6 +8,14 @@ import BoardCell from '../../components/main/board/BoardCell';
 import BoardBody from '../../components/main/board/BoardBody';
 import Tags from '../../components/common/Tags';
 import { Pagination } from '@material-ui/lab';
+import { withRouter, Link } from 'react-router-dom';
+
+import qs from 'qs';
+import { qnaList, initialize, LIST } from '../../modules/qna';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/common/Loading';
+import { boardTitle } from '../../data/menuData';
+
 const columns = [
   { id: 'no', label: 'No.', width: '10%' },
   { id: 'title', label: '제목', width: '25%' },
@@ -46,18 +54,42 @@ const BoardContainer = styled.div`
   align-items: center;
   background: #fff;
 `;
-const QnaBoardContainer = () => {
-  const [page, setPage] = useState(0);
-  const onChangePage = useCallback((e, value) => {
-    console.log(` value ${value}`);
-    setPage(value - 1);
-  }, []);
+const QnaBoardContainer = ({ location, history }) => {
+  const dispatch = useDispatch();
+  const skill = location.pathname.split('/')[2];
+  const query = qs.parse(location.search, {
+    ignoreQueryPrefix: true,
+  });
+  const queryPage = parseInt(query.page);
+  const { content, totalElements, totalPages, loading } = useSelector(
+    ({ qna, loading }) => ({
+      content: qna.list.content,
+      totalElements: qna.list.totalElements,
+      totalPages: qna.list.totalPages,
+      loading: loading[LIST],
+    }),
+  );
+
+  const [page, setPage] = useState(queryPage || 0);
+
+  const onChangePage = useCallback(
+    (e, value) => {
+      setPage(value - 1);
+    },
+    [page],
+  );
   useEffect(() => {
-    console.log(page);
-  }, [page]);
+    setPage(page || 0);
+  }, [skill]);
+  useEffect(() => {
+    history.push(`/qna/${skill}?page=${page}`);
+    dispatch(qnaList({ skill, page }));
+  }, [page, skill]);
   return (
     <BoardContainer>
-      <BoardTitle totalElements={40}>질문게시판</BoardTitle>
+      <BoardTitle totalElements={totalElements}>
+        질문게시판 ({boardTitle[skill]})
+      </BoardTitle>
       <Board>
         <BoardHead>
           <BoardRow>
@@ -67,17 +99,48 @@ const QnaBoardContainer = () => {
           </BoardRow>
         </BoardHead>
         <BoardBody>
-          <BoardRow>
-            <BoardCell>85</BoardCell>
-            <BoardCell>게시글 입니다 여기 제목이 출력되는 곳이에요</BoardCell>
-            <BoardCell align="right">givejeong</BoardCell>
-            <BoardCell align="center">
-              <Tags data="java" />
-              <Tags data="html" />
-            </BoardCell>
-            <BoardCell align="center">5557</BoardCell>
-            <BoardCell align="right">21-04-30 15:55</BoardCell>
-          </BoardRow>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {content.length > 0 ? (
+                content.map((data) => (
+                  <BoardRow key={data.id}>
+                    <BoardCell>
+                      {data.id.toString().length > 10
+                        ? `${data.id.toString().slice(0, 7)}...`
+                        : data.id.toString()}
+                    </BoardCell>
+                    <BoardCell>
+                      <Link to="">
+                        {data.title.length > 30
+                          ? `${data.title.slice(0, 27)}...`
+                          : data.title}
+                      </Link>
+                    </BoardCell>
+                    <BoardCell align="right">{data.writer}</BoardCell>
+                    <BoardCell align="center">
+                      {data.roleTypeDtoList.map((type, i) => (
+                        <Tags
+                          style={{ margin: '0px 2px' }}
+                          key={i + type}
+                          data={type.title}
+                        />
+                      ))}
+                    </BoardCell>
+                    <BoardCell align="center">{data.hit}</BoardCell>
+                    <BoardCell align="right">{data.createQna}</BoardCell>
+                  </BoardRow>
+                ))
+              ) : (
+                <BoardRow>
+                  <BoardCell colSpan={6} align="center">
+                    게시글이 없습니다.
+                  </BoardCell>
+                </BoardRow>
+              )}
+            </>
+          )}
         </BoardBody>
       </Board>
       <Pagination
@@ -86,8 +149,8 @@ const QnaBoardContainer = () => {
           display: 'inline-block',
         }}
         size="large"
-        count={10}
-        value={page}
+        count={totalPages}
+        page={page + 1}
         onChange={onChangePage}
         variant="outlined"
         color="primary"
@@ -97,4 +160,4 @@ const QnaBoardContainer = () => {
   );
 };
 
-export default QnaBoardContainer;
+export default withRouter(QnaBoardContainer);

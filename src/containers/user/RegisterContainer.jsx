@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import SignUp from '../../components/main/SignUp';
 import { withRouter } from 'react-router-dom';
 import {
-  localList,
   changeField,
   idCheck,
   registerUser,
   initialize,
   changeMessage,
-  CONST_LOCALLIST,
 } from '../../modules/register';
+import { LOCAL, localList } from '../../modules/common';
+
 const RegisterContainer = ({ history }) => {
   const dispatch = useDispatch();
   const { local, loading, form, msg, auth, authError } = useSelector(
-    ({ register, loading }) => ({
-      local: register.localList,
-      loading: loading[CONST_LOCALLIST],
+    ({ register, loading, common }) => ({
+      local: common.local,
+      loading: loading[LOCAL],
       form: register.form,
       msg: register.msg,
       auth: register.auth,
