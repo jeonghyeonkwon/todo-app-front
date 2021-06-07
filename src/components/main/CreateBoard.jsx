@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Chip, makeStyles, Button } from '@material-ui/core';
+import {
+  TextField,
+  Chip,
+  makeStyles,
+  Button,
+  Checkbox,
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { types } from '../../data/skillTypes';
+import { boardTitle } from '../../data/menuData';
+
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -35,95 +49,28 @@ const CreateBoardComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
-const CreateBoard = ({ location, history, type }) => {
-  const classes = useStyles();
-  const fixedOptions = location.pathname.split('/')[2];
-  const [tag, setTag] = React.useState([]);
-  const [form, setForm] = useState({
-    title: '',
-    contents: '',
-    applicant: 0,
-    programmingType: null,
-  });
-  useEffect(() => {
-    console.log(`fix : ${fixedOptions}`);
-  }, []);
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    console.log(`value : ${value} name : ${name}`);
-    if (name === 'applicant' && value < 0) {
-      setForm({
-        ...form,
-        applicant: 0,
-        programmingType: tag,
-      });
-    } else {
-      setForm({
-        ...form,
-        [name]: value,
-        programmingType: tag,
-      });
-    }
-  };
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    // setForm({
-    //   ...form,
-    //   programmingType: tag,
-    // });
-    const { title, contents, programmingType } = form;
-    if (
-      !title ||
-      !contents ||
-      !(programmingType.length > 0 && programmingType.length < 3)
-    ) {
-      alert('빈 값을 채워 주세요');
-      return;
-    }
-    console.log(programmingType);
-    console.log('요청');
-    console.log(form);
-    const response = (token) =>
-      axios.post(
-        `http://localhost:8080/api/${type}?section=${fixedOptions}`,
-        form,
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-          },
-        },
-      );
-    try {
-      const token = localStorage.getItem('jwttoken');
 
-      await response(token)
-        .then((res) => {
-          if (res.status === 201) {
-            alert('게시글 작성에 완료되었습니다.');
-            history.push(`/${type}/board/${res.data}`);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          alert('작성 중 에러가 발생했습니다 다시 시도해 주세요');
-          window.location.reload();
-        });
-    } catch (e) {
-      alert('로그인에 문제가 있습니다. 다시 로그인해 주세요.');
-    }
-  };
-  useEffect(() => {
-    setForm({
-      ...form,
-      programmingType: tag,
-    });
-  }, [tag]);
+const type = {
+  qna: 'Q&A',
+  study: '스터디',
+};
+const CreateBoard = ({
+  boardType,
+  skill,
+  form,
+  onChange,
+  onChangeType,
+  onSubmit,
+  onClickBack,
+}) => {
+  const classes = useStyles();
+
   return (
     <CreateBoardComponent>
       <Form className={classes.root}>
-        <h1>게시 글 작성 ({category[fixedOptions].kor})</h1>
-
+        <h1>
+          {type[boardType]} 게시 글 작성 ({boardTitle[skill]})
+        </h1>
         <TextField
           label="제목"
           fullWidth
@@ -131,7 +78,7 @@ const CreateBoard = ({ location, history, type }) => {
           name="title"
           value={form.title}
         />
-        {type === 'study' && (
+        {boardType === 'study' && (
           <TextField
             label="모집 인원"
             type="number"
@@ -141,8 +88,39 @@ const CreateBoard = ({ location, history, type }) => {
             value={form.applicant}
           />
         )}
-
         <Autocomplete
+          multiple
+          id="checkboxes-tags-demo"
+          options={types}
+          value={form.programmingType}
+          disableCloseOnSelect
+          onChange={onChangeType}
+          limitTags={2}
+          getOptionLabel={(option) => option.kor}
+          renderOption={(option, { selected }) => {
+            return (
+              <>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.kor}
+              </>
+            );
+          }}
+          style={{ width: 500 }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              label="기술 유형"
+              placeholder="기술 유형 1~2 가지를 선택하세요"
+            />
+          )}
+        />
+        {/* <Autocomplete
           fullWidth
           multiple
           id="fixed-tags-demo"
@@ -154,7 +132,7 @@ const CreateBoard = ({ location, history, type }) => {
             } else {
               setTag([
                 ...newValue.filter((option) => {
-                  return fixedOptions.indexOf(option) === -1;
+                  return skill.indexOf(option) === -1;
                 }),
               ]);
             }
@@ -168,7 +146,7 @@ const CreateBoard = ({ location, history, type }) => {
               <Chip
                 label={option.title}
                 {...getTagProps({ index })}
-                disabled={fixedOptions.indexOf(option) !== -1}
+                disabled={skill.indexOf(option) !== -1}
               />
             ))
           }
@@ -180,7 +158,7 @@ const CreateBoard = ({ location, history, type }) => {
               helperText="하위 유형 1~2개를 선택하세요"
             />
           )}
-        />
+        /> */}
         <TextField
           label="내용"
           fullWidth
@@ -194,29 +172,13 @@ const CreateBoard = ({ location, history, type }) => {
           <Button variant="outlined" color="primary" onClick={onSubmit}>
             등록 하기
           </Button>
-          <Button variant="outlined">뒤로 가기</Button>
+          <Button variant="outlined" onCLick={onClickBack}>
+            뒤로 가기
+          </Button>
         </div>
       </Form>
     </CreateBoardComponent>
   );
-};
-const category = {
-  db: {
-    title: 'db',
-    kor: '데이터 베이스',
-  },
-  mobile: {
-    title: 'mobile',
-    kor: '모바일',
-  },
-  web: {
-    title: 'web',
-    kor: '웹',
-  },
-  language: {
-    title: 'language',
-    kor: '프로그래밍 언어',
-  },
 };
 
 export default withRouter(CreateBoard);

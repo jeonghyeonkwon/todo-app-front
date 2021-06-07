@@ -87,7 +87,7 @@ const QnaBoardContainer = ({ location, history }) => {
   }, [page, skill]);
   return (
     <BoardContainer>
-      <BoardTitle totalElements={totalElements}>
+      <BoardTitle totalElements={totalElements} boardType="qna" skill={skill}>
         질문게시판 ({boardTitle[skill]})
       </BoardTitle>
       <Board>

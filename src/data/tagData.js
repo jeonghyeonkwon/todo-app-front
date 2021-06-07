@@ -69,7 +69,7 @@ export const kind = {
     django: {
         fontColor: '#043a2a',
         backGround: '#fff',
-        kor: 'node-js',
+        kor: '장고',
     },
     php: {
         fontColor: '#787cb4',

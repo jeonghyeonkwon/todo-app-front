@@ -12,7 +12,7 @@ export const types = [
     { title: 'objectc', kor: '오브젝트-C' },
     { title: 'spring', kor: '스프링' },
     { title: 'nodejs', kor: 'node-js' },
-    { title: 'django', kor: 'node-js' },
+    { title: 'django', kor: '장고' },
     { title: 'php', kor: 'php' },
     { title: 'rubyon', kor: 'ruby on rails' },
     { title: 'reactn', kor: '리액트네이티브' },

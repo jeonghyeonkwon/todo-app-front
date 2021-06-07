@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
@@ -18,12 +18,15 @@ const TitleAndCreate = styled.div`
   }
 `;
 
-const BoardTitle = ({ children, totalElements }) => {
+const BoardTitle = ({ children, totalElements, boardType, skill }) => {
+  useEffect(() => {
+    console.log(`${boardType}/${skill}/write`);
+  }, []);
   return (
     <>
       <TitleAndCreate>
         <h1>{children}</h1>
-        <Link to="">
+        <Link to={`/${boardType}/${skill}/write`}>
           <Fab size="small" color="secondary" aria-label="edit">
             <EditIcon />
           </Fab>

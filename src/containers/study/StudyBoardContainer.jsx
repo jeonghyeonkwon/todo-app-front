@@ -127,7 +127,7 @@ const StudyBoardContainer = ({ location, history }) => {
         onChangeLocal={onChangeLocal}
         pick={form.pick}
       />
-      <BoardTitle totalElements={totalElements}>
+      <BoardTitle totalElements={totalElements} boardType="study" skill={skill}>
         질문게시판 ({boardTitle[skill]})
       </BoardTitle>
       <Board>

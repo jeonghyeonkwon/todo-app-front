@@ -24,6 +24,7 @@ function checkFailureSaga() {
 function logoutSaga() {
     try {
         localStorage.removeItem('jwttoken');
+        console.log('토큰이 지워졌습니다.')
     } catch (e) {
         console.log(e);
     }
@@ -36,6 +37,7 @@ export function* userSaga() {
 
 const initialState = {
     account: {
+        id: null,
         accountId: null,
         accountName: null,
     },
@@ -44,17 +46,20 @@ const initialState = {
 export default handleActions(
     {
         [CHECK_SUCCESS]: (state, { payload: auth }) => produce(state, draft => {
+            draft.account.id = auth.id;
             draft.account.accountId = auth.accountId;
             draft.account.accountName = auth.accountName;
             draft.checkError = null;
         }),
         [CHECK_FAILURE]: (state, { payload: error }) => produce(state, draft => {
+            draft.account.id = null;
             draft.account.accountId = null;
             draft.account.accountName = null;
             draft.checkError = error;
         }),
 
         [LOGOUT]: state => produce(state, draft => {
+            draft.account.id = null;
             draft.account.accountId = null;
             draft.account.accountName = null;
         }),

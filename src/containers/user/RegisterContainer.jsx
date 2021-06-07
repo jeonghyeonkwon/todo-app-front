@@ -78,8 +78,6 @@ const RegisterContainer = ({ history }) => {
   });
   const onClickBack = (e) => {
     e.preventDefault();
-    console.log('뒤로가기');
-    console.log(history);
     history.goBack();
   };
   useEffect(() => {
