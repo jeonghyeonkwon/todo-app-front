@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { TextField, Button } from '@material-ui/core';
 import Tags from '../common/Tags';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Loading from '../common/Loading';
+
 const Tabel = styled.table`
   width: 100%;
   /* border: 1px solid red; */
@@ -61,148 +60,30 @@ const BoardDetailComponent = styled.div`
   width: 100%;
   background: #fff;
 `;
-const BoardDetail = ({ location, history, section }) => {
-  const [detail, setDetail] = useState({
-    id: '',
-    detail: '',
-    writer: '',
-    programmingType: [],
-    applicant: '',
-    status: '',
-    commentList: [],
-    hit: 0,
-    createStudy: '',
-  });
-
-  const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector(({ user }) => ({
-    currentUser: user.account.accountId,
-  }));
-
-  const [comment, setComment] = useState('');
-  const onChange = (e) => {
-    setComment(e.target.value);
-    console.log(comment);
-  };
-  const onClickComment = async (e) => {
-    e.preventDefault();
-    if (!comment.length || comment.length > 50) {
-      alert('1자 이상 50자 이내의 내용을 입력하세요');
-      return;
-    }
-    console.log(`댓글 쓰기 ${comment}`);
-    e.preventDefault();
-    const response = (token) =>
-      axios.post(
-        `http://localhost:8080/api/${section}/${detail.id}`,
-        JSON.stringify({ comment: comment }),
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-          },
-        },
-      );
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(token);
-      await response(token)
-        .then((res) => {
-          if (res.status === 201) {
-            alert('댓글입력을 완료 하였습니다.');
-            window.location.reload();
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          alert('작성 중 에러가 발생했습니다 다시 시도해 주세요');
-          window.location.reload();
-        });
-    } catch (e) {
-      alert('로그인에 문제가 있습니다. 다시 로그인해 주세요.');
-    }
-  };
-  const onClickClosing = async (e) => {
-    e.preventDefault();
-    const response = (token) =>
-      axios.patch(
-        `http://localhost:8080/api/${section}/${detail.id}`,
-        detail.id,
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-          },
-        },
-      );
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(token);
-      await response(token)
-        .then((res) => {
-          if (res.status === 200) {
-            alert('마감 하였습니다.');
-            window.location.reload();
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          alert('작성 중 에러가 발생했습니다 다시 시도해 주세요');
-          window.location.reload();
-        });
-    } catch (e) {
-      alert('로그인에 문제가 있습니다. 다시 로그인해 주세요.');
-    }
-  };
-  useEffect(() => {
-    const boardId = location.pathname.split('/')[3];
-    const fetchDetail = async (token) => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/${section}/${boardId}`,
-          {
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-              Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-            },
-          },
-        );
-        console.log(response);
-        setDetail(response.data);
-      } catch (e) {
-        console.log(`${e} 함수 안`);
-        alert(e);
-        //alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-        //history.push('/');
-      }
-      setLoading(false);
-    };
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(`token ${token}`);
-      fetchDetail(token);
-    } catch (e) {
-      console.log('2');
-
-      alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-      //history.push('/');
-    }
-  }, []);
-  useEffect(() => {
-    console.log(detail);
-    console.log(`type ${section}`);
-  }, [detail]);
+const typeTitle = {
+  study: '스터디 모집',
+  qna: 'Q&A',
+};
+const BoardDetail = ({
+  detail,
+  boardType,
+  accountId,
+  comment,
+  onClickComment,
+  loading,
+  onClickClosing,
+  onChange,
+}) => {
   return (
     <BoardDetailComponent>
-      {loading || !detail ? (
+      {loading ? (
         <Loading />
       ) : (
         <Form>
-          <h1>게시글</h1>
+          <h1>{typeTitle[boardType]} 게시글</h1>
           <Tabel>
             <thead>
-              {section === 'study' ? (
+              {boardType === 'study' ? (
                 <tr>
                   <th colSpan={1}>NO.</th>
                   <td colSpan={3}>{detail.id}</td>
@@ -248,9 +129,9 @@ const BoardDetail = ({ location, history, section }) => {
               </tr>
             </tbody>
           </Tabel>
-          {currentUser === detail.writer &&
+          {accountId === detail.writer &&
             detail.status === 'ing' &&
-            section === 'study' && (
+            boardType === 'study' && (
               <Button
                 variant="outlined"
                 color="secondary"

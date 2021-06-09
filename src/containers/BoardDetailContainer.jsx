@@ -8,20 +8,17 @@ const BoardDetailStyled = styled.div`
   flex-direction: column;
   padding: 20px;
   flex: 4;
-
-  /* height: 800px; */
-
   justify-content: center;
   align-items: center;
   background: #fff;
 `;
 const BoardDetailContainer = ({ location }) => {
-  const section = location.pathname.split('/')[1];
+  const boardType = location.pathname.split('/')[1];
   const boardId = location.pathname.split('/')[3];
   return (
     <BoardDetailStyled>
-      <BoardDetail section={section}></BoardDetail>
-      <CommentList section={section} boardId={boardId}></CommentList>
+      <BoardDetail section={boardType}></BoardDetail>
+      <CommentList boardType={boardType} boardId={boardId}></CommentList>
     </BoardDetailStyled>
   );
 };

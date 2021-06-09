@@ -152,7 +152,7 @@ const StudyBoardContainer = ({ location, history }) => {
                         : data.id.toString()}
                     </BoardCell>
                     <BoardCell>
-                      <Link to="">
+                      <Link to={`/study/board/${data.id}`}>
                         {data.title.length > 30
                           ? `${data.title.slice(0, 27)}...`
                           : data.title}
