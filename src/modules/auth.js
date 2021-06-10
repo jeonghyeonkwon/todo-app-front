@@ -16,6 +16,15 @@ export const [SEARCHPW, SEARCHPW_SUCCESS, SEARCHPW_FAILURE] = createRequestActio
 export const [UPDATEPW, UPDATEPW_SUCCESS, UPDATEPW_FAILURE] = createRequestActionTypes('auth/UPDATEPW');
 
 
+export const [INFO, INFO_SUCCESS, INFO_FAILURE] = createRequestActionTypes('user/INFO');
+export const fetchUser = createAction(INFO);
+const fetchUserSaga = createRequestSaga(INFO, authApi.userInfo);
+
+
+export const [UPDATE, UPDATE_SUCCESS, UPDATE_FAILURE] = createRequestActionTypes('user/UPDATE');
+export const updateUser = createAction(UPDATE, (userId, update, form) => ({ userId, update, form }));
+const updateUserSaga = createRequestSaga(UPDATE, authApi.updateUser);
+
 const INITIALIZE = 'auth/INITIALIZE';
 export const initialize = createAction(INITIALIZE);
 
@@ -27,8 +36,19 @@ const initialState = {
         updateAuth: null,
         updateAuthError: null,
     },
+    info: {
+        id: null,
+        accountId: '',
+        name: '',
+        location: '',
+        tel: '',
+    },
     user: {
         token: null,
+    },
+    update: {
+        success: null,
+        error: null,
     },
     authError: null,
 }
@@ -81,6 +101,25 @@ const auth = handleActions({
         if (error.response.status === 400)
             draft.search.updateAuthError = error;
     }),
+    [INFO_SUCCESS]: (state, { payload }) => produce(state, draft => {
+        draft.info.id = payload.account.id;
+        draft.info.accountId = payload.account.accountId;
+        draft.info.name = payload.account.name;
+        draft.info.location = payload.account.location;
+        draft.info.tel = payload.account.tel;
+
+    }),
+    [INFO_FAILURE]: (state, { payload: error }) => produce(state, draft => {
+        draft.infoError = error
+    }),
+    [UPDATE_SUCCESS]: (state, { payload }) => produce(state, draft => {
+        draft.update.success = payload;
+        draft.update.error = null;
+    }),
+    [UPDATE_FAILURE]: (state, { payload: error }) => produce(state, draft => {
+        draft.update.success = null;
+        draft.update.error = error;
+    })
 }, initialState)
 
 export function* authSaga() {
@@ -88,5 +127,7 @@ export function* authSaga() {
     yield takeLatest(SEARCHID, searchIdSaga);
     yield takeLatest(SEARCHPW, searchPwSaga);
     yield takeLatest(UPDATEPW, updatePasswordSaga);
+    yield takeLatest(INFO, fetchUserSaga);
+    yield takeLatest(UPDATE, updateUserSaga);
 }
 export default auth;

@@ -29,11 +29,6 @@ function logoutSaga() {
         console.log(e);
     }
 }
-export function* userSaga() {
-    yield takeLatest(CHECK, checkSaga);
-    yield takeLatest(CHECK_FAILURE, checkFailureSaga);
-    yield takeLatest(LOGOUT, logoutSaga);
-}
 
 const initialState = {
     account: {
@@ -41,7 +36,9 @@ const initialState = {
         accountId: null,
         accountName: null,
     },
+
     checkError: null,
+    infoError: null,
 }
 export default handleActions(
     {
@@ -62,6 +59,13 @@ export default handleActions(
             draft.account.id = null;
             draft.account.accountId = null;
             draft.account.accountName = null;
-        }),
+        })
     }, initialState
 )
+
+export function* userSaga() {
+    yield takeLatest(CHECK, checkSaga);
+    yield takeLatest(CHECK_FAILURE, checkFailureSaga);
+    yield takeLatest(LOGOUT, logoutSaga);
+
+}

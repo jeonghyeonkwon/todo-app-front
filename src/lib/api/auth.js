@@ -1,4 +1,4 @@
-import client from './client';
+import client, { loadToken } from './client';
 
 export const login = (form) =>
     client.post('/authenticate', form);
@@ -22,3 +22,11 @@ export const searchId = (form) => client.get(`/search-id?accountName=${form.acco
 export const searchPw = (form) => client.get(`/search-pw?accountId=${form.accountId}&accountName=${form.accountName}&tel=${form.tel}`);
 // 비밀번호 변경
 export const updatePw = (form) => client.patch(`/search-pw/${form.id}`, form);
+
+export const userInfo = () => client.get('/myinfo', {
+    headers: loadToken()
+})
+
+export const updateUser = ({ userId, update, form }) => client.patch(`myinfo/${userId}?update=${update}`, form, {
+    headers: loadToken(),
+})

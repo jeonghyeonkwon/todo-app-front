@@ -107,11 +107,6 @@ const StudyBoardContainer = ({ location, history }) => {
   }, [skill]);
   useEffect(() => {
     history.push(`/study/${skill}?page=${form.page}&local=${form.pick}`);
-
-    console.log(
-      '--------------------------------리덕스 액션--------------------------------',
-    );
-    console.log(`skill ${skill} --- page ${form.page} --- local ${form.pick}`);
     dispatch(studyList({ skill, page: form.page, local: form.pick }));
   }, [form.pick, form.page, skill]);
 

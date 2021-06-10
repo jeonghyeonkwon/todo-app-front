@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -16,8 +16,7 @@ import {
 } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import Loading from '../common/Loading';
-import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '70%',
@@ -66,189 +65,28 @@ const MyInfoComponent = styled.div`
   align-items: center;
   background: #fff;
 `;
-const MyInfo = ({ history }) => {
+const MyInfo = ({
+  local,
+  info,
+  loading,
+  expanded,
+  onChangePanel,
+  handleChangeForm,
+  form,
+  onClickUpdate,
+  onClickDelete,
+}) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    currentPw: '',
-    newPw: '',
-    reNewPw: '',
-    name: '',
-    responseData: [],
-    local: '',
-    withDrawalPw: '',
-  });
-  const [account, setAccount] = useState({
-    id: 0,
-    accountId: '',
-    tel: '',
-    location: '',
-    name: '',
-  });
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-  const onClickUpdate = async (event, updateName) => {
-    event.preventDefault();
 
-    const { currentPw, newPw, reNewPw, name, tel, local } = form;
-    switch (updateName) {
-      case 'password':
-        if (!currentPw || !newPw || !reNewPw) {
-          alert('빈 공간을 채워주세요');
-          return;
-        }
-
-        if (newPw !== reNewPw) {
-          alert('새로운 비밀번호와 새로운 비밀번호가 일치하지 않습니다.');
-          return;
-        }
-        break;
-      case 'name':
-        if (!name) {
-          alert('빈 공간을 채워주세요');
-          return;
-        }
-        break;
-      case 'tel':
-        if (!tel) {
-          alert('빈 공간을 채워주세요');
-          return;
-        }
-        break;
-      case 'local':
-        if (!local) {
-          alert('지역을 채워주세요');
-          return;
-        }
-        break;
-    }
-    const updateUser = (token) =>
-      axios.patch(
-        `http://localhost:8080/api/myinfo/${account.id}?update=${updateName}`,
-        form,
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-          },
-        },
-      );
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(`token ${token}`);
-      await updateUser(token)
-        .then((res) => {
-          if (res.status === 204) {
-            alert('회원 정보 수정에 완료하였습니다.');
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    } catch (e) {
-      console.log(e);
-      alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-      //history.push('/');
-    } finally {
-      window.location.reload();
-    }
-  };
-  const deleteUser = async (e) => {
-    e.preventDefault();
-    const { withDrawalPw } = form;
-    if (!withDrawalPw) {
-      alert('내용을 채워주세요.');
-      return;
-    }
-    const deleteUser = (token) =>
-      axios.delete(`http://localhost:8080/api/myinfo/${account.id}`, {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-          Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-        },
-        data: { withDrawalPw },
-        withCredentials: true,
-      });
-
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(`token ${token}`);
-      await deleteUser(token)
-        .then((res) => {
-          if (res.status === 204) {
-            alert('회원 탈퇴를 완료하였습니다. 감사합니다.');
-            history.push('/');
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    } catch (e) {
-      console.log('2');
-
-      alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-      //history.push('/');
-    }
-  };
-  useEffect(() => {
-    setForm({
-      ...form,
-      currentPw: '',
-      newPw: '',
-      reNewPw: '',
-      tel: '',
-      name: '',
-      local: '',
-      withDrawalPw: '',
-    });
-  }, [expanded]);
-  const handleChangeForm = (e) => {
-    const { value, name } = e.target;
-    setForm({ ...form, [name]: value });
-  };
-  useEffect(() => {
-    const fetchLocal = async (token) => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`http://localhost:8080/api/myinfo`, {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${token.replace(/\"/gi, '')}`,
-          },
-        });
-        console.log(response);
-        setForm({ ...form, responseData: response.data.local });
-        setAccount(response.data.account);
-      } catch (e) {
-        console.log(`${e} 함수 안`);
-        alert(e);
-        //alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-        //history.push('/');
-      }
-      setLoading(false);
-    };
-    try {
-      const token = localStorage.getItem('jwttoken');
-      console.log(`token ${token}`);
-      fetchLocal(token);
-    } catch (e) {
-      console.log('2');
-
-      alert('내용에 문제가 있습니다. 다시 시도 해주세요');
-      //history.push('/');
-    }
-  }, []);
   return (
     <MyInfoComponent>
-      {loading && account.id ? (
+      {loading ? (
         <Loading />
       ) : (
         <div className={classes.root}>
           <Accordion
             expanded={expanded === 'panel1'}
-            onChange={handleChange('panel1')}
+            onChange={onChangePanel('panel1')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -257,7 +95,7 @@ const MyInfo = ({ history }) => {
             >
               <Typography className={classes.heading}>아이디</Typography>
               <Typography className={classes.secondaryHeading}>
-                {account.accountId}
+                {info.accountId}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.detail}>
@@ -266,7 +104,7 @@ const MyInfo = ({ history }) => {
           </Accordion>
           <Accordion
             expanded={expanded === 'panel2'}
-            onChange={handleChange('panel2')}
+            onChange={onChangePanel('panel2')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -318,7 +156,7 @@ const MyInfo = ({ history }) => {
           </Accordion>
           <Accordion
             expanded={expanded === 'panel3'}
-            onChange={handleChange('panel3')}
+            onChange={onChangePanel('panel3')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -327,7 +165,7 @@ const MyInfo = ({ history }) => {
             >
               <Typography className={classes.heading}>성명</Typography>
               <Typography className={classes.secondaryHeading}>
-                {account.name}
+                {info.name}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.detail}>
@@ -352,7 +190,7 @@ const MyInfo = ({ history }) => {
           </Accordion>
           <Accordion
             expanded={expanded === 'panel4'}
-            onChange={handleChange('panel4')}
+            onChange={onChangePanel('panel4')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -361,7 +199,7 @@ const MyInfo = ({ history }) => {
             >
               <Typography className={classes.heading}>전화번호</Typography>
               <Typography className={classes.secondaryHeading}>
-                {account.tel}
+                {info.tel}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.detail}>
@@ -386,7 +224,7 @@ const MyInfo = ({ history }) => {
           </Accordion>
           <Accordion
             expanded={expanded === 'panel5'}
-            onChange={handleChange('panel5')}
+            onChange={onChangePanel('panel5')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -395,7 +233,7 @@ const MyInfo = ({ history }) => {
             >
               <Typography className={classes.heading}>지역</Typography>
               <Typography className={classes.secondaryHeading}>
-                {account.location}
+                {info.location}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.detail}>
@@ -404,15 +242,17 @@ const MyInfo = ({ history }) => {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={form.local}
+                  value={info.local}
                   name="local"
                   onChange={handleChangeForm}
                 >
-                  {form.responseData.map((data) => (
-                    <MenuItem key={data} value={data}>
-                      {data}
-                    </MenuItem>
-                  ))}
+                  {local
+                    .filter((x) => x.kor !== '전체')
+                    .map((data) => (
+                      <MenuItem key={data.eng} value={data.kor}>
+                        {data.kor}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
               <Button
@@ -427,7 +267,7 @@ const MyInfo = ({ history }) => {
           </Accordion>
           <Accordion
             expanded={expanded === 'panel6'}
-            onChange={handleChange('panel6')}
+            onChange={onChangePanel('panel6')}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -453,7 +293,7 @@ const MyInfo = ({ history }) => {
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
-                onClick={deleteUser}
+                onClick={onClickDelete}
               >
                 탈퇴하기
               </Button>
@@ -465,4 +305,4 @@ const MyInfo = ({ history }) => {
   );
 };
 
-export default withRouter(MyInfo);
+export default MyInfo;

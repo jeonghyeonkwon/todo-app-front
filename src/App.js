@@ -35,13 +35,13 @@ const App = () => {
         <Route path="/study/:type" component={Auth(StudyBoardContainer, null)} exact />
         <Route path="/study/board/:number" component={Auth(StudyDetailContainer, true)} exact />
 
-        {/* true로 바꿔야함 */}
+
         <Route path="/study/:type/write" component={Auth(StudyWriteContainer, true)} />
         <Route path="/qna" component={Auth(BoardIntroContainer, null)} exact />
         <Route path="/qna/:type" component={Auth(QnaBoardContainer, null)} exact />
         <Route path="/qna/board/:number" component={Auth(QnaDetailContainer, true)} exact />
 
-        {/* true로 바꿔야함 */}
+
         <Route path="/qna/:type/write" component={Auth(QnaWriteContainer, true)} />
       </FramePage>
 
