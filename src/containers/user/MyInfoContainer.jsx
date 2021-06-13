@@ -19,7 +19,6 @@ const MyInfoContainer = () => {
     newPw: '',
     reNewPw: '',
     name: '',
-
     local: '',
     withDrawalPw: '',
   });

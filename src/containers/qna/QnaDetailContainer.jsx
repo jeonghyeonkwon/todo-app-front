@@ -14,15 +14,15 @@ import {
 } from '../../modules/qna';
 import BoardDetail from '../../components/main/BoardDetail';
 import CommentList from '../../components/main/CommentList';
-const BoardDetailStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  flex: 4;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
+// const BoardDetailStyled = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   padding: 20px;
+//   flex: 4;
+//   justify-content: center;
+//   align-items: center;
+//   background: #fff;
+// `;
 
 const QnaDetailContainer = ({ location }) => {
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ const QnaDetailContainer = ({ location }) => {
   }, []);
 
   return (
-    <BoardDetailStyled>
+    <>
       <BoardDetail
         boardType="qna"
         detail={detail}
@@ -103,7 +103,7 @@ const QnaDetailContainer = ({ location }) => {
           onChange={onChangePage}
         />
       )}
-    </BoardDetailStyled>
+    </>
   );
 };
 

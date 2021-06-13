@@ -27,14 +27,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const SearchComponent = styled.div`
-  flex: 4;
-  height: 800px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 const MessageAlert = styled.div`
   color: crimson;
   width: 100%;
@@ -52,7 +44,7 @@ const Search = ({ type, onChange, form, onSubmit, msg }) => {
   const classes = useStyles(props[type]);
 
   return (
-    <SearchComponent>
+    <>
       <Paper elevation={3} className={classes.paper}>
         <Typography variant="h4">{titleType[type]}</Typography>
 
@@ -105,7 +97,7 @@ const Search = ({ type, onChange, form, onSubmit, msg }) => {
           </div>
         )}
       </Paper>
-    </SearchComponent>
+    </>
   );
 };
 

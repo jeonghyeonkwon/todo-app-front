@@ -1,18 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Loading from '../common/Loading';
+
 import Progress from '../common/Progress';
 import Skeleton from '@material-ui/lab/Skeleton';
-const Item = styled.div`
-  /* border: 1px solid black; */
-`;
+const Item = styled.div``;
 const Title = styled.div`
   border: 3px solid rgb(59, 89, 152);
   padding: 0px 15px;
 `;
 const Rank = styled.div`
   flex: 1;
-  /* border: 1px solid blue; */
+
   height: 350px;
   h2 {
     font-size: 20px;
@@ -22,7 +20,6 @@ const Rank = styled.div`
 `;
 
 const RankViewComponent = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   width: 100%;
   ${Rank} {
@@ -47,11 +44,6 @@ const RankViewComponent = styled.div`
   }
 `;
 const RankView = ({ rank }) => {
-  useEffect(() => {
-    console.log(`랭크`);
-    console.log(rank.totalRank);
-  }, []);
-  useEffect(() => {}, [rank]);
   return (
     <RankViewComponent>
       {rank.length === 0 ? (

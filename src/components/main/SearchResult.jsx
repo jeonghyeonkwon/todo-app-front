@@ -32,18 +32,10 @@ const FindIdList = styled.div`
     font-weight: 400;
   }
 `;
-const SearchResultComponent = styled.div`
-  flex: 4;
-  height: 800px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
+
 const SearchResult = ({
   type,
   findId,
-  findPw,
   onChange,
   onClickUpdatePw,
   newPassword,
@@ -51,7 +43,7 @@ const SearchResult = ({
 }) => {
   const classes = useStyles();
   return (
-    <SearchResultComponent>
+    <>
       <Paper elevation={3} className={classes.paper}>
         {type === 'searchId' ? (
           <>
@@ -109,7 +101,7 @@ const SearchResult = ({
           </>
         )}
       </Paper>
-    </SearchResultComponent>
+    </>
   );
 };
 

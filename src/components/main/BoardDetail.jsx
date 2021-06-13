@@ -50,15 +50,7 @@ const Form = styled.div`
   box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.3);
   border-radius: 5px;
   width: 100%;
-`;
-const BoardDetailComponent = styled.div`
-  padding: 20px;
-
-  /* border: 1px solid red; */
-  /* height: 800px; */
-  display: flex;
-  width: 100%;
-  background: #fff;
+  margin-bottom: 20px;
 `;
 const typeTitle = {
   study: '스터디 모집',
@@ -75,7 +67,7 @@ const BoardDetail = ({
   onChange,
 }) => {
   return (
-    <BoardDetailComponent>
+    <>
       {loading ? (
         <Loading />
       ) : (
@@ -170,7 +162,7 @@ const BoardDetail = ({
           </ReplyForm>
         </Form>
       )}
-    </BoardDetailComponent>
+    </>
   );
 };
 

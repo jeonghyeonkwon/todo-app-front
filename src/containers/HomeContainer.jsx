@@ -10,15 +10,15 @@ const Form = styled.div`
 `;
 const Title = styled.div``;
 
-const HomeComponent = styled.div`
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-  padding: 25px;
-`;
+// const HomeComponent = styled.div`
+//   flex: 4;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   background: #fff;
+//   padding: 25px;
+// `;
 const HomeContainer = () => {
   const [form, setForm] = useState({
     study: [],
@@ -41,7 +41,7 @@ const HomeContainer = () => {
     fetchData();
   }, []);
   return (
-    <HomeComponent>
+    <>
       {loading ? (
         <Loading />
       ) : (
@@ -64,7 +64,7 @@ const HomeContainer = () => {
           </Form>
         </>
       )}
-    </HomeComponent>
+    </>
   );
 };
 

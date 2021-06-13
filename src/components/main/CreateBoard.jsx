@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
   TextField,
@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+
 import { types } from '../../data/skillTypes';
 import { boardTitle } from '../../data/menuData';
 
@@ -41,14 +41,6 @@ const Form = styled.form`
   width: 70%;
   box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.3);
 `;
-const CreateBoardComponent = styled.div`
-  flex: 4;
-  height: 800px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 
 const type = {
   qna: 'Q&A',
@@ -66,7 +58,7 @@ const CreateBoard = ({
   const classes = useStyles();
 
   return (
-    <CreateBoardComponent>
+    <>
       <Form className={classes.root}>
         <h1>
           {type[boardType]} 게시 글 작성 ({boardTitle[skill]})
@@ -177,7 +169,7 @@ const CreateBoard = ({
           </Button>
         </div>
       </Form>
-    </CreateBoardComponent>
+    </>
   );
 };
 

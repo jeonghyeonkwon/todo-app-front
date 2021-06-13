@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardActions,
@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
     height: 220,
     display: 'inline-block',
     position: 'relative',
+    textAlign: 'left',
   },
   title: {
     fontSize: 14,
@@ -54,7 +55,7 @@ const font = {
     color: 'secondary',
   },
 };
-const StyledCard = ({ data, status, kind, handleOpen }) => {
+const StyledCard = ({ data, kind, handleOpen }) => {
   const classes = useStyles();
 
   return (
@@ -64,10 +65,10 @@ const StyledCard = ({ data, status, kind, handleOpen }) => {
           <CardContent>
             <Typography
               className={classes.title}
-              color={font[status].color}
+              color={font[data.status].color}
               gutterBottom
             >
-              {font[status].text}
+              {font[data.status].text}
             </Typography>
             <Typography variant="h5" component="h2">
               {data.title.length > 15

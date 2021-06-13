@@ -15,15 +15,6 @@ import {
 } from '../../modules/study';
 import BoardDetail from '../../components/main/BoardDetail';
 import CommentList from '../../components/main/CommentList';
-const BoardDetailStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  flex: 4;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 
 const StudyDetailContainer = ({ location }) => {
   const dispatch = useDispatch();
@@ -105,7 +96,7 @@ const StudyDetailContainer = ({ location }) => {
     return () => dispatch(initialize());
   }, []);
   return (
-    <BoardDetailStyled>
+    <>
       <BoardDetail
         boardType="study"
         detail={detail}
@@ -124,7 +115,7 @@ const StudyDetailContainer = ({ location }) => {
           onChange={onChangePage}
         />
       )}
-    </BoardDetailStyled>
+    </>
   );
 };
 

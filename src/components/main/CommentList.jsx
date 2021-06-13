@@ -22,10 +22,6 @@ const CommentListComponent = styled.div`
   width: 100%;
 `;
 const CommentList = ({ loading, list, onChange, page }) => {
-  useEffect(() => {
-    console.log(list);
-  }, [list]);
-
   return (
     <CommentListComponent>
       {loading ? (

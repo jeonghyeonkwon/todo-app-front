@@ -55,16 +55,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyInfoComponent = styled.div`
-  padding: 20px;
-  flex: 4;
-  height: 800px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 const MyInfo = ({
   local,
   info,
@@ -79,7 +69,7 @@ const MyInfo = ({
   const classes = useStyles();
 
   return (
-    <MyInfoComponent>
+    <>
       {loading ? (
         <Loading />
       ) : (
@@ -301,7 +291,7 @@ const MyInfo = ({
           </Accordion>
         </div>
       )}
-    </MyInfoComponent>
+    </>
   );
 };
 

@@ -77,17 +77,9 @@ const LoginForm = styled.form`
   border: 1px solid gray;
   box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.3);
 `;
-const LoginComponent = styled.div`
-  flex: 4;
-  height: 800px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 const Login = ({ onChange, onClickLogin, form }) => {
   return (
-    <LoginComponent>
+    <>
       <LoginForm>
         <h1>로그인</h1>
         <Field>
@@ -123,7 +115,7 @@ const Login = ({ onChange, onClickLogin, form }) => {
           <Link to="/register">회원가입</Link>
         </BtnGroup>
       </LoginForm>
-    </LoginComponent>
+    </>
   );
 };
 

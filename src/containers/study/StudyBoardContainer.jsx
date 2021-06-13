@@ -52,16 +52,6 @@ const columns = [
   },
 ];
 
-const BoardContainer = styled.div`
-  display: flex;
-  padding: 50px;
-  flex: 4;
-  height: 800px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 const StudyBoardContainer = ({ location, history }) => {
   const dispatch = useDispatch();
   const skill = location.pathname.split('/')[2];
@@ -115,7 +105,7 @@ const StudyBoardContainer = ({ location, history }) => {
   }, [local]);
 
   return (
-    <BoardContainer>
+    <>
       <LocalList
         local={local}
         loading={localLoading}
@@ -198,7 +188,7 @@ const StudyBoardContainer = ({ location, history }) => {
         color="primary"
         boundaryCount={10}
       />
-    </BoardContainer>
+    </>
   );
 };
 

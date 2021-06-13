@@ -92,14 +92,6 @@ const SignUpForm = styled.form`
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
   position: relative;
 `;
-const SignUpComponent = styled.div`
-  flex: 4;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
 const SignUp = ({
   local,
   loading,
@@ -110,28 +102,8 @@ const SignUp = ({
   onSubmitRegister,
   onClickBack,
 }) => {
-  //전화번호 하이픈
-  // useEffect(() => {
-  //   console.log(form.tel);
-  //   if (form.tel.length === 10) {
-  //     console.log('10자리 도달', form.tel);
-  //     setForm({
-  //       ...form,
-  //       tel: form.tel.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-  //     });
-  //   }
-  //   if (form.tel.length === 13) {
-  //     console.log('13자리 도달', form.tel);
-  //     setForm({
-  //       ...form,
-  //       tel: form.tel
-  //         .replace(/-/g, '')
-  //         .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-  //     });
-  //   }
-  // }, [form.tel]);
   return (
-    <SignUpComponent>
+    <>
       {loading ? (
         <Loading></Loading>
       ) : (
@@ -219,7 +191,7 @@ const SignUp = ({
           </FormButton>
         </SignUpForm>
       )}
-    </SignUpComponent>
+    </>
   );
 };
 

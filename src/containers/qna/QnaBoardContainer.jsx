@@ -44,16 +44,16 @@ const columns = [
     align: 'right',
   },
 ];
-const BoardContainer = styled.div`
-  display: flex;
-  padding: 50px;
-  flex: 4;
-  height: 800px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-`;
+// const BoardContainer = styled.div`
+//   display: flex;
+//   padding: 50px;
+//   flex: 4;
+//   height: 800px;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   background: #fff;
+// `;
 const QnaBoardContainer = ({ location, history }) => {
   const dispatch = useDispatch();
   const skill = location.pathname.split('/')[2];
@@ -86,7 +86,7 @@ const QnaBoardContainer = ({ location, history }) => {
     dispatch(qnaList({ skill, page }));
   }, [page, skill]);
   return (
-    <BoardContainer>
+    <>
       <BoardTitle totalElements={totalElements} boardType="qna" skill={skill}>
         질문게시판 ({boardTitle[skill]})
       </BoardTitle>
@@ -156,7 +156,7 @@ const QnaBoardContainer = ({ location, history }) => {
         color="primary"
         boundaryCount={10}
       />
-    </BoardContainer>
+    </>
   );
 };
 
