@@ -1,4 +1,4 @@
-# 스터디 TODO Front-end[미완성] (21-05-23기준)
+# 스터디 TODO Front-end[진행중] (21-06-14기준)
 [백엔드 (Spring-boot)](https://github.com/jeonghyeonkwon/todo-app-back)
 
 ## 실행
@@ -15,7 +15,7 @@ path|query string|내용|완성 여부|추가할 내용(설명)|
 /register|X|회원가입|완성|X|
 /search/searchId|X|아이디 찾기|완성||
 /search/searchPw|X|비밀번호 찾기|완성|비밀번호 공개가 아닌 비밀번호 변경으로|
-/todo|X|TODO|진행중|TODO 카드의 자세한 내용 and 많은 양의 카드를 페이징 처리|
+/todo|X|TODO||TODO 카드의 자세한 내용 and 많은 양의 카드를 페이징 처리|
 /study, /qna|X|게시판 카테고리|완성|X|
 /study/:type|page,local|유형별 스터디 카테고리|완성||
 /study/:type/write|X|게시글 작성|완성|기술 분야와 내용들을 입력하여 글을 씁니다.|
