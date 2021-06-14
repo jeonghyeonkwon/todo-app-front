@@ -30,7 +30,7 @@ const HomeContainer = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8080/home');
+        const response = await axios.get('http://localhost:8080/api/home');
         setForm(response.data);
         console.log(response);
       } catch (e) {
